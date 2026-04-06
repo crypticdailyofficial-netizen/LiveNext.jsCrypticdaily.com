@@ -194,21 +194,8 @@ export default async function ArticlePage({
       ? `${article.title.slice(0, 40).trimEnd()}…`
       : article.title;
 
-  const coverPreloadUrl = article.coverImage
-    ? `/_next/image?url=${encodeURIComponent(article.coverImage)}&w=1080&q=75`
-    : null;
-
   return (
     <>
-      {coverPreloadUrl && (
-        <link
-          rel="preload"
-          as="image"
-          href={coverPreloadUrl}
-          // @ts-expect-error — fetchpriority valid HTML, missing from React types
-          fetchpriority="high"
-        />
-      )}
       <ArticleJsonLd
         title={article.title}
         excerpt={article.excerpt}
@@ -311,7 +298,7 @@ export default async function ArticlePage({
               {article.coverImage ? (
                 <Image
                   src={article.coverImage}
-                  alt={article.coverImageAlt || article.title}
+                  alt={article.coverImageAlt || ""}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 65vw, 800px"
                   className="object-cover"
