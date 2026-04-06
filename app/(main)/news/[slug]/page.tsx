@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { TypedObject } from "sanity";
+import { LazyAdUnit as AdUnit } from "@/components/ads/LazyAdUnit";
 import { AuthorAvatar } from "@/components/article/AuthorAvatar";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { ArticleMeta } from "@/components/article/ArticleMeta";
@@ -24,16 +24,6 @@ import {
   getRelatedArticles,
 } from "@/lib/sanity/queries";
 import { generateArticleMetadata } from "@/lib/seo";
-
-const AdUnit = dynamic(
-  () => import("@/components/ads/AdUnit").then((mod) => mod.AdUnit),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="my-8 min-h-[90px] rounded-xl border border-dashed border-white/10 bg-white/5" />
-    ),
-  },
-);
 
 export const revalidate = 300;
 
