@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-interface AdUnitProps {
+export interface AdUnitProps {
   slot: string;
   format?: 'in-article' | 'display';
   className?: string;
