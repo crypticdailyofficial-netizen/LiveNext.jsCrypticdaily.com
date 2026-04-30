@@ -716,7 +716,7 @@ export function PrivacyContent({ fontVars }: Props) {
                 Cryptic Daily ("we", "us", "our") is an independent digital media
                 publication covering cryptocurrency markets, blockchain technology,
                 decentralised finance, Web3, NFTs, and related topics. The website
-                is operated by Anti Gravity and is available at{" "}
+                is operated by Cryptic Daily and is available at{" "}
                 <A href="https://crypticdaily.com">crypticdaily.com</A>.
               </P>
               <P>
@@ -1171,7 +1171,7 @@ export function PrivacyContent({ fontVars }: Props) {
               <p className="text-[#6B7280] text-[0.72rem] tracking-[0.12em]"
                 style={{ fontFamily: "var(--font-jb-mono)" }}>
                 END OF PRIVACY POLICY &nbsp;·&nbsp; CRYPTICDAILY.COM &nbsp;·&nbsp;
-                © 2024 ANTI GRAVITY &nbsp;·&nbsp; LAST UPDATED MARCH 2026
+                © 2024 CRYPTIC DAILY &nbsp;·&nbsp; LAST UPDATED MARCH 2026
               </p>
             </div>
           </main>

@@ -19,7 +19,7 @@ const organizationSchema = {
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "editorial",
-    email: "editor@crypticdaily.com",
+    email: "editorial@crypticdaily.com",
   },
 };
 

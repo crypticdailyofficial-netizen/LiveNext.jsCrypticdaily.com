@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: "https://crypticdaily.com/search" },
     robots: {
       index: false,
-      follow: false,
+      follow: true,
     },
     openGraph: {
       title: "Search | Cryptic Daily",

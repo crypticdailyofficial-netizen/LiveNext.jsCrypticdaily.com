@@ -453,7 +453,6 @@ export function EditorialContent({ fontVars }: Props) {
                 style={{ fontFamily: "var(--font-jb-mono)" }}
               >
                 LAST UPDATED: MARCH 2026 &nbsp;·&nbsp; CRYPTIC DAILY
-                &nbsp;·&nbsp; ANTI GRAVITY
               </span>
             </div>
 
@@ -538,7 +537,7 @@ export function EditorialContent({ fontVars }: Props) {
               <div className="mt-8 pt-6 border-t border-[#1C2535] space-y-2">
                 {[
                   ["Updated", "March 2026"],
-                  ["Publisher", "Anti Gravity"],
+                  ["Publisher", "Cryptic Daily"],
                   ["Applies to", "crypticdaily.com"],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-2">
@@ -900,7 +899,7 @@ export function EditorialContent({ fontVars }: Props) {
               </div>
 
               <p className="mt-8 text-[#6B7280] text-[0.82rem] leading-[1.7]">
-                Cryptic Daily is published and operated by Anti Gravity. For
+                Cryptic Daily is published and operated by Cryptic Daily. For
                 general enquiries, visit our <A href="/contact">Contact page</A>
                 .
               </p>

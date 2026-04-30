@@ -9,9 +9,10 @@ interface Props {
 }
 
 /* ─── Data ───────────────────────────────────────────────────────────────── */
-const COMPANY_NAME = "Cryptic Daily";
+const REGISTERED_LOCATION = "European Union (Remote-first editorial team)";
 const EMAIL = "contact@crypticdaily.com";
-const EDITORIAL_CONTACT = "Editorial Team — editor@crypticdaily.com";
+const EDITORIAL_EMAIL = "editorial@crypticdaily.com";
+const EDITORIAL_CONTACT = `Editorial: ${EDITORIAL_EMAIL}`;
 
 const CONTACT_ITEMS = [
   {
@@ -382,7 +383,14 @@ export function ContactContent({ fontVars }: Props) {
               className="mt-4 text-[#E8E4D9] text-[0.74rem] tracking-[0.18em] uppercase"
               style={{ fontFamily: "var(--font-jb-mono)" }}
             >
-              Company name: {COMPANY_NAME}
+              Registered: {REGISTERED_LOCATION}
+            </p>
+
+            <p
+              className="mt-4 text-[#E8E4D9] text-[0.74rem] tracking-[0.18em] uppercase"
+              style={{ fontFamily: "var(--font-jb-mono)" }}
+            >
+              General enquiries: {EMAIL}
             </p>
 
             <p
@@ -644,6 +652,25 @@ export function ContactContent({ fontVars }: Props) {
                   >
                     "{EMAIL}"
                   </a>
+                  <span className="text-[#E8E4D9]">,</span>
+                </p>
+                <p className="pl-4">
+                  <span className="text-[#6B7280]">editorial</span>
+                  <span className="text-[#E8E4D9]">: </span>
+                  <a
+                    href={`mailto:${EDITORIAL_EMAIL}`}
+                    className="text-[#10B981] hover:text-[#00D4FF] transition-colors"
+                  >
+                    "{EDITORIAL_EMAIL}"
+                  </a>
+                  <span className="text-[#E8E4D9]">,</span>
+                </p>
+                <p className="pl-4">
+                  <span className="text-[#6B7280]">registered</span>
+                  <span className="text-[#E8E4D9]">: </span>
+                  <span className="text-[#FFE600]">
+                    "{REGISTERED_LOCATION}"
+                  </span>
                   <span className="text-[#E8E4D9]">,</span>
                 </p>
                 <p className="pl-4">
