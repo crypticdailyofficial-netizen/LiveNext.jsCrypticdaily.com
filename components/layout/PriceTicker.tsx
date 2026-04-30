@@ -113,6 +113,8 @@ export function PriceTicker() {
 
   useEffect(() => {
     let cancelled = false;
+    let idleCallbackId: number | null = null;
+    let fallbackTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const fetchTickerData = async () => {
       try {
@@ -174,13 +176,35 @@ export function PriceTicker() {
       }
     };
 
-    void fetchTickerData();
-    refreshIntervalRef.current = window.setInterval(() => {
+    const startTicker = () => {
+      if (cancelled) {
+        return;
+      }
+
       void fetchTickerData();
-    }, 30000);
+      refreshIntervalRef.current = window.setInterval(() => {
+        void fetchTickerData();
+      }, 30000);
+    };
+
+    if ("requestIdleCallback" in window) {
+      idleCallbackId = window.requestIdleCallback(startTicker, {
+        timeout: 3000,
+      });
+    } else {
+      fallbackTimeoutId = globalThis.setTimeout(startTicker, 2000);
+    }
 
     return () => {
       cancelled = true;
+
+      if (idleCallbackId != null && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+
+      if (fallbackTimeoutId != null) {
+        window.clearTimeout(fallbackTimeoutId);
+      }
 
       if (refreshIntervalRef.current != null) {
         window.clearInterval(refreshIntervalRef.current);

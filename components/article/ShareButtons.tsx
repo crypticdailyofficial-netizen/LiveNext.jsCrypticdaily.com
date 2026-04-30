@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { SITE_URL } from "@/lib/constants";
 
 interface ShareButtonsProps {
@@ -32,7 +29,7 @@ function WhatsAppIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
   );
 }
 
-function CopyIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
+function LinkIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -44,44 +41,14 @@ function CopyIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-      />
-    </svg>
-  );
-}
-
-function CheckIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M5 13l4 4L19 7"
+        d="M13.828 10.172a4 4 0 010 5.656l-2 2a4 4 0 11-5.656-5.656l1.172-1.172m2.828-2.828l2-2a4 4 0 115.656 5.656l-1.172 1.172m-8.484 1.656l6-6"
       />
     </svg>
   );
 }
 
 export function ShareButtons({ title, slug }: ShareButtonsProps) {
-  const [copied, setCopied] = useState(false);
   const url = `${SITE_URL}/news/${slug}`;
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setCopied(false);
-    }
-  };
-
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`;
@@ -121,15 +88,25 @@ export function ShareButtons({ title, slug }: ShareButtonsProps) {
           LinkedIn
         </a>
 
+        <span className="text-amber-300/35">•</span>
 
-       
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on WhatsApp"
+          className={btn}
+        >
+          <WhatsAppIcon />
+          WhatsApp
+        </a>
 
         <span className="text-amber-300/35">•</span>
 
-        <button onClick={handleCopy} aria-label="Copy link" className={btn}>
-          {copied ? <CheckIcon /> : <CopyIcon />}
-          {copied ? "Copied!" : "Copy"}
-        </button>
+        <a href={url} aria-label="Open article link" className={btn}>
+          <LinkIcon />
+          Link
+        </a>
       </div>
     </div>
   );

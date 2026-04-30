@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter), sans-serif;
-  --font-heading: var(--font-space-grotesk), sans-serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --color-navy: #0a0f1e;
   --color-surface: #111827;
   --color-border: #1e2a3a;
@@ -131,7 +131,7 @@
     background-size: cover;
     background-attachment: fixed;
     color: #f9fafb;
-    font-family: var(--font-inter), sans-serif;
+    font-family: var(--font-sans);
   }
   h1,
   h2,
@@ -139,7 +139,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-space-grotesk), sans-serif;
+    font-family: var(--font-heading);
     font-weight: 700;
     color: #f9fafb;
   }
@@ -183,7 +183,7 @@
     -webkit-line-clamp: 3;
   }
   .font-heading {
-    font-family: var(--font-space-grotesk), sans-serif;
+    font-family: var(--font-heading);
   }
   .text-balance {
     text-wrap: balance;
@@ -208,6 +208,27 @@
   }
   .animate-border-pulse {
     animation: var(--animate-border-pulse);
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }
 .glass {

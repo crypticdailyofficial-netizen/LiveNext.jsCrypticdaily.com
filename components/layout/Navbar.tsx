@@ -41,7 +41,7 @@ export function Navbar() {
 
           <Link
             href="/"
-            aria-label="Cryptic Daily Home"
+            prefetch={false}
             className="relative z-10 flex min-w-0 items-center gap-3"
           >
             <div className="relative h-11 w-11 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
@@ -69,6 +69,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className="rounded-full px-4 py-2 text-[0.82rem] font-medium whitespace-nowrap text-[#A4ADB8] transition-all duration-200 hover:bg-white/[0.06] hover:text-[#F5F7FB]"
               >
                 {link.label}
@@ -148,6 +149,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={false}
                   onClick={() => setMobileOpen(false)}
                   className="block rounded-2xl px-4 py-3 text-sm font-medium text-[#A4ADB8] transition-all duration-200 hover:bg-white/[0.05] hover:text-[#F5F7FB]"
                 >

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { AuthorAvatar } from "@/components/article/AuthorAvatar";
@@ -139,6 +137,7 @@ export function Hero({ article }) {
           <div className="max-w-2xl">
             <Link
               href={`/categories/${article.category.slug}`}
+              prefetch={false}
               className="inline-flex"
             >
               <Badge
@@ -165,7 +164,7 @@ export function Hero({ article }) {
               {article.excerpt}
             </p>
             <div className="mb-7 flex items-center gap-4">
-              <Link href={`/author/${article.author.slug}`}>
+              <Link href={`/author/${article.author.slug}`} prefetch={false}>
                 <div
                   className="rounded-full"
                   style={{ border: "2px solid rgba(245,158,11,0.4)" }}
@@ -181,6 +180,7 @@ export function Hero({ article }) {
               <div>
                 <Link
                   href={`/author/${article.author.slug}`}
+                  prefetch={false}
                   className="text-sm font-semibold"
                   style={{ color: "#F5EDD6" }}
                 >
@@ -192,7 +192,7 @@ export function Hero({ article }) {
                 </p>
               </div>
             </div>
-            <Link href={`/news/${article.slug}`}>
+            <Link href={`/news/${article.slug}`} prefetch={false}>
               <Button variant="primary" size="md">
                 READ MORE →
               </Button>

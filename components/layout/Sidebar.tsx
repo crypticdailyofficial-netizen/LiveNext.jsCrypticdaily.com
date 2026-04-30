@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import type { Article } from "@/types/article";
 
@@ -58,6 +56,7 @@ function TrendingSection({ articles }: { articles: Article[] }) {
             <Link
               key={article.id ?? article.slug}
               href={`/news/${article.slug}`}
+              prefetch={false}
               className="group grid grid-cols-[40px_1fr_auto] items-start gap-4 py-[15px]"
             >
               <span
@@ -89,6 +88,7 @@ function TrendingSection({ articles }: { articles: Article[] }) {
         <div className="border-t border-white/8 pt-4 pb-2">
           <Link
             href="/news"
+            prefetch={false}
             className="inline-flex items-center gap-2 text-sm font-medium text-[#D6AE69] transition-colors duration-200 hover:text-[#F3C981]"
           >
             Browse latest coverage

@@ -2,28 +2,84 @@
 
 import { useEffect, useRef } from "react";
 
+declare global {
+  interface Window {
+    adsbygoogle?: unknown[];
+  }
+}
+
 export interface AdUnitProps {
   slot: string;
   format?: 'in-article' | 'display';
   className?: string;
 }
 
+let adsenseScriptPromise: Promise<void> | null = null;
+
+function loadAdSenseScript(client: string) {
+  if (typeof window === "undefined") {
+    return Promise.resolve();
+  }
+
+  if (adsenseScriptPromise) {
+    return adsenseScriptPromise;
+  }
+
+  const scriptId = "cryptic-daily-adsense";
+  const existingScript = document.getElementById(scriptId) as
+    | HTMLScriptElement
+    | null;
+
+  adsenseScriptPromise = new Promise<void>((resolve, reject) => {
+    if (existingScript) {
+      if (existingScript.dataset.loaded === "true") {
+        resolve();
+        return;
+      }
+
+      existingScript.addEventListener("load", () => resolve(), { once: true });
+      existingScript.addEventListener("error", () => reject(), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
+    script.onload = () => {
+      script.dataset.loaded = "true";
+      resolve();
+    };
+    script.onerror = () => reject();
+    document.head.appendChild(script);
+  });
+
+  return adsenseScriptPromise;
+}
+
 export function AdUnit({ slot, format = 'display', className }: AdUnitProps) {
   const adRef = useRef<HTMLModElement>(null);
   const loaded = useRef(false);
+  const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 
   useEffect(() => {
+    if (!client) return;
     if (loaded.current) return;
     loaded.current = true;
-    try {
-      // @ts-expect-error adsbygoogle not typed
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch {
-      // AdSense not available
-    }
-  }, []);
 
-  const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+    loadAdSenseScript(client)
+      .then(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch {
+          // AdSense can be blocked by the browser or an extension.
+        }
+      })
+      .catch(() => {
+        // Keep the ad slot reserved if the network script is unavailable.
+      });
+  }, [client]);
 
   const containerClass =
     format === 'in-article'

@@ -19,6 +19,27 @@ const categoryFields = `
   color
 `;
 
+const homepageAuthorFields = `
+  name,
+  "slug": slug.current,
+  avatar
+`;
+
+const homepageArticleCardFields = `
+  title,
+  "slug": slug.current,
+  excerpt,
+  publishedAt,
+  _updatedAt,
+  featured,
+  "coverImage": coverImage{
+    asset,
+    alt
+  },
+  "category": category->{ ${categoryFields} },
+  "author": author->{ ${homepageAuthorFields} }
+`;
+
 export const articleCardFields = `
   title,
   "slug": slug.current,
@@ -49,6 +70,18 @@ export const featuredArticleQuery = `
 export const latestArticlesQuery = `
   *[_type == "article"] | order(publishedAt desc)[0...$limit] {
     ${articleCardFields}
+  }
+`;
+
+export const homepageFeaturedArticleQuery = `
+  *[_type == "article" && featured == true] | order(publishedAt desc)[0] {
+    ${homepageArticleCardFields}
+  }
+`;
+
+export const homepageLatestArticlesQuery = `
+  *[_type == "article"] | order(publishedAt desc)[0...$limit] {
+    ${homepageArticleCardFields}
   }
 `;
 
@@ -231,6 +264,32 @@ export const getLatestArticles = unstable_cache(
     }
   },
   ["latest-articles"],
+  { revalidate: 300, tags: ["articles"] },
+);
+
+export const getHomepageFeaturedArticle = unstable_cache(
+  async () => {
+    try {
+      return await sanityClient.fetch(homepageFeaturedArticleQuery);
+    } catch {
+      return null;
+    }
+  },
+  ["homepage-featured-article"],
+  { revalidate: 300, tags: ["articles"] },
+);
+
+export const getHomepageLatestArticles = unstable_cache(
+  async (limit = 12) => {
+    try {
+      return (
+        (await sanityClient.fetch(homepageLatestArticlesQuery, { limit })) ?? []
+      );
+    } catch {
+      return [];
+    }
+  },
+  ["homepage-latest-articles"],
   { revalidate: 300, tags: ["articles"] },
 );
 

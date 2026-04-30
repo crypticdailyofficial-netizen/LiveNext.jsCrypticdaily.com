@@ -7,8 +7,8 @@ import {
 } from "@/lib/sanity/adapters";
 import {
   getAllCategories,
-  getFeaturedArticle,
-  getLatestArticles,
+  getHomepageFeaturedArticle,
+  getHomepageLatestArticles,
   getTotalArticleCount,
 } from "@/lib/sanity/queries";
 
@@ -22,8 +22,8 @@ export default async function Homepage() {
     totalArticleCount,
   ] =
     await Promise.all([
-      getFeaturedArticle(),
-      getLatestArticles(24),
+      getHomepageFeaturedArticle(),
+      getHomepageLatestArticles(12),
       getAllCategories(),
       getTotalArticleCount(),
     ]);

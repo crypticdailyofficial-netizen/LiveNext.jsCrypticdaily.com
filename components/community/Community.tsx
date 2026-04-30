@@ -34,7 +34,7 @@ function SendIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
-function UsersIcon({ className = "h-4 w-4" }: { className?: string }) {
+function ArrowUpRightIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -46,10 +46,8 @@ function UsersIcon({ className = "h-4 w-4" }: { className?: string }) {
       className={className}
       aria-hidden="true"
     >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-      <circle cx="8.5" cy="7" r="4" />
-      <path d="M20 8v6" />
-      <path d="M23 11h-6" />
+      <path d="M7 17 17 7" />
+      <path d="M8 7h9v9" />
     </svg>
   );
 }
@@ -59,69 +57,107 @@ export default function Community({
   telegramHref = "https://t.me/CrypticDaily",
 }: CommunityProps) {
   return (
-    <section className="relative isolate mx-auto mt-10 min-h-[240px] max-w-7xl overflow-hidden rounded-2xl bg-neutral-950 ring-1 ring-white/10">
-      <div
-        className="animate-gradient-pan absolute -inset-40"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(135deg, rgba(56,189,248,0.10) 0 36px, rgba(99,102,241,0.08) 36px 72px, rgba(56,189,248,0.10) 72px 108px)",
-          backgroundSize: "480px 480px",
-        }}
-      />
+    <section
+      className="relative isolate mx-auto mt-10 max-w-7xl overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(135deg,#0C0E12_0%,#17131A_34%,#261C12_68%,#090909_100%)] text-white shadow-[0_28px_72px_rgba(0,0,0,0.36)]"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "360px" }}
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_14%_20%,rgba(251,191,36,0.14),transparent_22%),radial-gradient(circle_at_84%_14%,rgba(255,255,255,0.05),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_34%,transparent_74%,rgba(255,255,255,0.02))]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.14] [background-image:linear-gradient(rgba(255,255,255,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:60px_60px]" />
+      <div className="pointer-events-none absolute inset-y-0 left-[14%] w-px bg-[linear-gradient(180deg,transparent,rgba(251,191,36,0.18),transparent)]" />
+      <div className="pointer-events-none absolute inset-y-0 right-[18%] w-px bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.1),transparent)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,241,211,0.4),transparent)]" />
+      <div className="pointer-events-none absolute left-0 top-0 h-18 w-18 border-l border-t border-[#F59E0B]/30" />
+      <div className="pointer-events-none absolute bottom-0 right-0 h-20 w-20 border-b border-r border-[#F59E0B]/24" />
 
-      <div className="relative p-6 sm:p-8">
-        <div className="mb-4 flex items-center gap-2 text-xs uppercase tracking-wider text-neutral-300">
-          <h1 className="flex items-center gap-2 rounded-xl bg-red-600 px-5 text-lg font-extrabold text-white sm:text-2xl">
-            <UsersIcon className="h-4 w-4" />
-            Join our community
-          </h1>
+      <div className="relative z-10 p-6 sm:p-7 lg:p-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="mt-4 text-3xl font-black leading-[0.92] tracking-[-0.05em] text-white sm:text-4xl">
+            Join our community.
+          </h2>
+
+          <p className="mt-3 text-sm leading-6 text-[#E7D3BF] sm:text-[15px]">
+            Follow the desk on X or jump into Telegram for live updates and
+            conversation.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-2">
           <a
             href={twitterHref}
             target="_blank"
             rel="noreferrer"
-            className="group relative block rounded-xl bg-neutral-950 p-4 shadow-lg shadow-sky-500/20 ring-1 ring-white/10 transition sm:p-5"
-            aria-label="Join Discussion on X (Twitter)"
+            className="group relative block overflow-hidden rounded-[24px] border border-white/12 bg-[linear-gradient(180deg,rgba(18,18,22,0.98)_0%,rgba(7,7,10,0.98)_100%)] p-4 shadow-[0_18px_36px_rgba(0,0,0,0.32)] transition-all duration-200 hover:-translate-y-1 hover:border-white/24"
           >
-            <div className="flex items-start gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-lg bg-black/40 ring-1 ring-sky-400/40">
-                <TwitterIcon className="h-5 w-5 text-sky-300" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_24%),linear-gradient(135deg,rgba(255,255,255,0.06),transparent_34%,transparent_78%,rgba(255,255,255,0.03))]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.32),transparent)]" />
+
+            <div className="relative z-10 flex items-start gap-4 text-left">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-white/14 bg-white/[0.06] text-white shadow-[0_0_18px_rgba(255,255,255,0.06)]">
+                <TwitterIcon className="h-5 w-5" />
               </div>
-              <div className="min-w-0">
-                <div className="truncate text-sm font-semibold leading-5 text-white">
-                  Join Discussion on X (Twitter)
-                </div>
-                <div className="text-xs leading-5 text-neutral-300">
-                  Follow updates, threads, and live conversations.
+
+              <div className="min-w-0 flex-1">
+                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.24em] text-white/62">
+                  X
+                </span>
+
+                <h3 className="mt-2 text-lg font-semibold tracking-[-0.03em] text-white">
+                  Join discussion on X
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-white/68">
+                  Headlines, reactions, and desk commentary.
+                </p>
+
+                <div className="mt-4 flex items-center justify-between gap-4 border-t border-white/10 pt-3">
+                  <span className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-white/72">
+                    @crypticdailyhq
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-white transition-transform duration-200 group-hover:translate-x-1">
+                    Open channel
+                    <ArrowUpRightIcon className="h-4 w-4" />
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 ring-1 ring-white/10 transition group-hover:opacity-100" />
           </a>
 
           <a
             href={telegramHref}
             target="_blank"
             rel="noreferrer"
-            className="group relative block rounded-xl bg-neutral-950 p-4 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10 transition sm:p-5"
-            aria-label="Join Community on Telegram"
+            className="group relative block overflow-hidden rounded-[24px] border border-[#7ED5FF]/26 bg-[linear-gradient(180deg,#11A2F0_0%,#0088CC_46%,#005E8D_100%)] p-4 shadow-[0_18px_36px_rgba(0,78,117,0.34)] transition-all duration-200 hover:-translate-y-1 hover:border-[#C2ECFF]/42"
           >
-            <div className="flex items-start gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-lg bg-black/40 ring-1 ring-cyan-400/40">
-                <SendIcon className="h-5 w-5 text-cyan-300" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(224,245,255,0.24),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.14),transparent_34%,transparent_78%,rgba(125,213,255,0.08))]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(224,245,255,0.56),transparent)]" />
+
+            <div className="relative z-10 flex items-start gap-4 text-left">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-cyan-100/28 bg-white/[0.12] text-white shadow-[0_0_18px_rgba(165,243,252,0.12)]">
+                <SendIcon className="h-5 w-5" />
               </div>
-              <div className="min-w-0">
-                <div className="truncate text-sm font-semibold leading-5 text-white">
-                  Join Community on Telegram
-                </div>
-                <div className="text-xs leading-5 text-neutral-300">
-                  Chat with members, get drops, and AMAs.
+
+              <div className="min-w-0 flex-1">
+                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.24em] text-cyan-50/80">
+                  Telegram
+                </span>
+
+                <h3 className="mt-2 text-lg font-semibold tracking-[-0.03em] text-white">
+                  Join community on Telegram
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-cyan-50/86">
+                  Chat with readers and get faster alerts.
+                </p>
+
+                <div className="mt-4 flex items-center justify-between gap-4 border-t border-white/10 pt-3">
+                  <span className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-cyan-50/84">
+                    t.me/CrypticDaily
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-white transition-transform duration-200 group-hover:translate-x-1">
+                    Enter room
+                    <ArrowUpRightIcon className="h-4 w-4" />
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 ring-1 ring-white/10 transition group-hover:opacity-100" />
           </a>
         </div>
       </div>

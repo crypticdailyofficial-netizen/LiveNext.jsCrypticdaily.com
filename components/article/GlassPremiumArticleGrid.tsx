@@ -15,7 +15,7 @@ function GlassPremiumCard({ article }: { article: Article }) {
     <article
       className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] p-3 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl"
     >
-      <Link href={`/news/${article.slug}`} className="block">
+      <Link href={`/news/${article.slug}`} prefetch={false} className="block">
         <div className="relative overflow-hidden rounded-[26px] border border-white/10">
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-black/10 to-white/10" />
           <div className="relative h-56 w-full bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_35%),linear-gradient(180deg,rgba(18,18,18,0.9)_0%,rgba(7,7,7,0.96)_100%)]">
@@ -24,6 +24,8 @@ function GlassPremiumCard({ article }: { article: Article }) {
                 src={article.coverImage}
                 alt={article.coverImageAlt || article.title}
                 fill
+                sizes="(max-width: 767px) calc(100vw - 56px), (max-width: 1279px) calc((100vw - 88px) / 2), 384px"
+                quality={65}
                 className="object-cover transition duration-500 group-hover:scale-105"
                 placeholder={article.coverImageBlurDataURL ? "blur" : "empty"}
                 blurDataURL={article.coverImageBlurDataURL ?? undefined}
@@ -39,6 +41,7 @@ function GlassPremiumCard({ article }: { article: Article }) {
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-400">
           <Link
             href={`/categories/${article.category.slug}`}
+            prefetch={false}
             className="rounded-full border border-white/10 bg-white/5 px-3 py-1 uppercase tracking-[0.18em] text-zinc-300"
           >
             {article.category.title}
@@ -46,7 +49,7 @@ function GlassPremiumCard({ article }: { article: Article }) {
           <span>{article.readingTime ?? 5} min read</span>
         </div>
 
-        <Link href={`/news/${article.slug}`} className="block">
+        <Link href={`/news/${article.slug}`} prefetch={false} className="block">
           <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white transition duration-200 group-hover:text-zinc-200">
             {article.title}
           </h3>
@@ -66,6 +69,7 @@ function GlassPremiumCard({ article }: { article: Article }) {
             />
             <Link
               href={`/author/${article.author.slug}`}
+              prefetch={false}
               className="truncate transition duration-200 hover:text-white"
             >
               {article.author.name}
