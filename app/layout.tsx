@@ -10,10 +10,10 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Cryptic Daily",
-  url: "https://crypticdaily.com",
+  url: SITE_URL,
   logo: {
     "@type": "ImageObject",
-    url: "https://crypticdaily.com/logo.png",
+    url: `${SITE_URL}/logo.png`,
   },
   sameAs: ["https://twitter.com/crypticdaily", "https://t.me/crypticdaily"],
   contactPoint: {
@@ -27,12 +27,12 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Cryptic Daily",
-  url: "https://crypticdaily.com",
+  url: SITE_URL,
   potentialAction: {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: "https://crypticdaily.com/search?q={search_term_string}",
+      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
     },
     "query-input": "required name=search_term_string",
   },
