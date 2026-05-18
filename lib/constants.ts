@@ -1,5 +1,10 @@
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://crypticdaily.com";
+const configuredSiteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.crypticdaily.com";
+
+export const SITE_URL = configuredSiteUrl.replace(
+  /^https:\/\/crypticdaily\.com$/,
+  "https://www.crypticdaily.com",
+);
 export const SITE_NAME =
   process.env.NEXT_PUBLIC_SITE_NAME || "Cryptic Daily";
 export const SITE_DESCRIPTION =

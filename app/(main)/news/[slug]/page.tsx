@@ -308,7 +308,15 @@ export default async function ArticlePage({
                   blurDataURL={article.coverImageBlurDataURL ?? undefined}
                 />
               ) : (
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,212,255,0.16),transparent_48%),linear-gradient(135deg,#111827,#020617)]" />
+                <Image
+                  src="/og-default.png"
+                  alt={`${article.title} cover image`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 65vw, 800px"
+                  className="object-cover"
+                  priority
+                  fetchPriority="high"
+                />
               )}
             </div>
 

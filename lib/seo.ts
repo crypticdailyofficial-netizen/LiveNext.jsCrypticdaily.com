@@ -51,7 +51,7 @@ export function generateArticleMetadata(article: {
   const description = article.excerpt?.slice(0, 155) ?? "";
 
   return {
-    title: pageTitle,
+    title: { absolute: pageTitle },
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
