@@ -1171,7 +1171,7 @@ export function PrivacyContent({ fontVars }: Props) {
               <p className="text-[#6B7280] text-[0.72rem] tracking-[0.12em]"
                 style={{ fontFamily: "var(--font-jb-mono)" }}>
                 END OF PRIVACY POLICY &nbsp;·&nbsp; CRYPTICDAILY.COM &nbsp;·&nbsp;
-                © 2024 CRYPTIC DAILY &nbsp;·&nbsp; LAST UPDATED MARCH 2026
+                © 2026 CRYPTIC DAILY &nbsp;·&nbsp; LAST UPDATED MARCH 2026
               </p>
             </div>
           </main>
@@ -1184,7 +1184,7 @@ export function PrivacyContent({ fontVars }: Props) {
         >
           <span className="text-[#6B7280] text-[0.68rem] tracking-[0.1em]"
             style={{ fontFamily: "var(--font-jb-mono)" }}>
-            © 2024 CRYPTIC DAILY &nbsp;·&nbsp; ALL RIGHTS RESERVED &nbsp;·&nbsp; CRYPTICDAILY.COM
+            © 2026 CRYPTIC DAILY &nbsp;·&nbsp; ALL RIGHTS RESERVED &nbsp;·&nbsp; CRYPTICDAILY.COM
           </span>
           <div className="flex items-center gap-6">
             {["About", "Contact", "Terms", "Editorial Policy"].map((label) => (

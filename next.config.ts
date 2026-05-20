@@ -25,6 +25,15 @@ const nextConfig = {
   },
   // ← ADD THIS — stops Next.js transpiling Sanity packages incorrectly
   transpilePackages: ["next-sanity"],
+  async redirects() {
+    return [
+      {
+        source: "/news/hyperliquid-regulation-oil-perps",
+        destination: "/news/hyperliquid-oil-perps-cftc-pressure",
+        statusCode: 301,
+      },
+    ];
+  },
   async headers() {
     return [
       {

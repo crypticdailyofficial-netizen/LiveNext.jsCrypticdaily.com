@@ -733,7 +733,7 @@ export function FinancialDisclaimerContent({ fontVars }: Props) {
                            flex flex-col md:flex-row justify-between items-center gap-3">
           <span className="text-[#6B7280] text-[0.68rem] tracking-[0.1em]"
             style={{ fontFamily: "var(--font-jb-mono)" }}>
-            © 2024 CRYPTIC DAILY &nbsp;·&nbsp; ALL RIGHTS RESERVED &nbsp;·&nbsp; CRYPTICDAILY.COM
+            © 2026 CRYPTIC DAILY &nbsp;·&nbsp; ALL RIGHTS RESERVED &nbsp;·&nbsp; CRYPTICDAILY.COM
           </span>
           <div className="flex items-center gap-6">
             {[
