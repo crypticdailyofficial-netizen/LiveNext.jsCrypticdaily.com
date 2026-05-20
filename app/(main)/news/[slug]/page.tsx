@@ -123,7 +123,7 @@ export async function generateMetadata({
     title: article.seoTitle || article.title,
     excerpt: article.seoDescription || article.excerpt,
     slug: article.slug,
-    coverImage: article.coverImage || `${SITE_URL}/og-default.png`,
+    coverImage: article.coverImage,
     publishedAt: article.publishedAt,
     author: { name: article.author.name },
   });
@@ -200,7 +200,7 @@ export default async function ArticlePage({
         title={article.title}
         excerpt={article.excerpt}
         slug={article.slug}
-        coverImage={article.coverImage || `${SITE_URL}/og-default.png`}
+        coverImage={article.coverImage}
         publishedAt={article.publishedAt}
         updatedAt={article.updatedAt}
         authorName={article.author.name}
@@ -308,15 +308,7 @@ export default async function ArticlePage({
                   blurDataURL={article.coverImageBlurDataURL ?? undefined}
                 />
               ) : (
-                <Image
-                  src="/og-default.png"
-                  alt={`${article.title} cover image`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 65vw, 800px"
-                  className="object-cover"
-                  priority
-                  fetchPriority="high"
-                />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,212,255,0.16),transparent_48%),linear-gradient(135deg,#111827,#020617)]" />
               )}
             </div>
 

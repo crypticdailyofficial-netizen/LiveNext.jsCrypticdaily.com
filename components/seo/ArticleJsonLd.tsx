@@ -4,7 +4,7 @@ interface ArticleJsonLdProps {
   title: string;
   excerpt: string;
   slug: string;
-  coverImage: string;
+  coverImage?: string | null;
   publishedAt: string;
   updatedAt?: string;
   authorName: string;
@@ -24,7 +24,7 @@ export function ArticleJsonLd({
     "@type": "NewsArticle",
     "headline": title,
     "description": excerpt,
-    "image": [coverImage],
+    ...(coverImage ? { image: [coverImage] } : {}),
     "datePublished": publishedAt,
     "dateModified": updatedAt ?? publishedAt,
     "author": {

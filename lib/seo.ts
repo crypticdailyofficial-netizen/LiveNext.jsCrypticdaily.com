@@ -41,7 +41,7 @@ export function generateArticleMetadata(article: {
   title: string;
   excerpt: string;
   slug: string;
-  coverImage: string;
+  coverImage?: string | null;
   publishedAt: string;
   author: { name: string };
 }): Metadata {
@@ -62,20 +62,22 @@ export function generateArticleMetadata(article: {
       type: "article",
       publishedTime: article.publishedAt,
       authors: [article.author.name],
-      images: [
-        {
-          url: article.coverImage,
-          width: 1200,
-          height: 630,
-          alt: article.title,
-        },
-      ],
+      images: article.coverImage
+        ? [
+            {
+              url: article.coverImage,
+              width: 1200,
+              height: 630,
+              alt: article.title,
+            },
+          ]
+        : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: openGraphTitle,
       description,
-      images: [article.coverImage],
+      images: article.coverImage ? [article.coverImage] : undefined,
     },
   };
 }
