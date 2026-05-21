@@ -4,6 +4,8 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PriceTickerClient } from "@/components/layout/PriceTickerClient";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { WebVitals } from "@/components/WebVitals";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 
 const organizationSchema = {
@@ -99,6 +101,8 @@ export default function RootLayout({
         </div>
         <Navbar />
         <main>{children}</main>
+        <GoogleAnalytics />
+        <WebVitals />
         <Footer />
       </body>
     </html>
