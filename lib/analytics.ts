@@ -2,12 +2,19 @@
 
 import { sendGAEvent } from "@next/third-parties/google";
 
-const GA_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_ID;
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const PLACEHOLDER_GA_ID = "G-XXXXXXXXXX";
+const GA4_ID_PATTERN = /^G-[A-Z0-9]+$/;
 
 export function isAnalyticsEnabled() {
-  return process.env.NODE_ENV !== "development" && Boolean(GA_ID) && GA_ID !== PLACEHOLDER_GA_ID;
+  if (!GA_ID || GA_ID === PLACEHOLDER_GA_ID) {
+    return false;
+  }
+
+  return (
+    process.env.NODE_ENV !== "development" &&
+    GA4_ID_PATTERN.test(GA_ID)
+  );
 }
 
 export function trackEvent(
