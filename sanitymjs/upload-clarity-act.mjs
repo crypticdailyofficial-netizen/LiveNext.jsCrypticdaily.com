@@ -102,7 +102,7 @@ const doc = {
   title: "Franklin Templeton Buys 250 Digital for Crypto Push",
   slug: { _type: "slug", current: "franklin-templeton-250-digital-crypto" },
   category: { _ref: "category-crypto-newswire", _type: "reference" },
-  author: { _ref: "author-market-analyst", _type: "reference" },
+  author: { _ref: "author-alex-carter", _type: "reference" },
   body,
   excerpt: "Franklin Templeton is buying 250 Digital and launching Franklin Crypto, a sign that active token strategies and on-chain deal rails are moving deeper into mainstream asset management.",
   seoDescription: "Franklin Templeton's 250 Digital acquisition shows how active crypto strategies and on-chain settlement are moving deeper into institutional finance.",
@@ -125,13 +125,6 @@ const categoryDoc = {
   slug: { _type: "slug", current: "crypto-newswire" },
 };
 
-const authorDoc = {
-  _id: "author-market-analyst",
-  _type: "author",
-  name: "Market Analyst",
-  slug: { _type: "slug", current: "market-analyst" },
-};
-
 // ── Upload via Sanity HTTP Mutations API ─────────────────────────────────────
 
 async function upload() {
@@ -141,7 +134,7 @@ async function upload() {
     return;
   }
   const url = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/mutate/${DATASET}`;
-  const mutations = [{ createIfNotExists: categoryDoc }, { createIfNotExists: authorDoc }, { createOrReplace: doc }];
+  const mutations = [{ createIfNotExists: categoryDoc }, { createOrReplace: doc }];
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${TOKEN}` },

@@ -2,7 +2,7 @@
  * single-article.mjs
  *
  * Uploads only:
- * drafts.morgan-stanley-bitcoin-etf-advisor-channel
+ * japan-crypto-investment-trusts-sbi-rakuten
  */
 
 import { config as loadEnv } from "dotenv";
@@ -77,7 +77,7 @@ function richTextBlock(parts, style = "normal") {
   };
 }
 
-// ── Category & Author docs ───────────────────────────────────────────────────
+// ── Category, Author & Tags ──────────────────────────────────────────────────
 
 const categoryDoc = {
   _id: "category-crypto-newswire",
@@ -86,135 +86,153 @@ const categoryDoc = {
   slug: { _type: "slug", current: "crypto-newswire" },
 };
 
-const authorMarketAnalyst = {
-  _id: "author-market-analyst",
-  _type: "author",
-  name: "Market Analyst",
-  slug: { _type: "slug", current: "market-analyst" },
-};
+const tags = [
+  {
+    _id: "tag-japan-crypto",
+    _type: "tag",
+    title: "japan crypto",
+    slug: { _type: "slug", current: "japan-crypto" },
+  },
+  {
+    _id: "tag-sbi-securities",
+    _type: "tag",
+    title: "sbi securities",
+    slug: { _type: "slug", current: "sbi-securities" },
+  },
+  {
+    _id: "tag-rakuten-securities",
+    _type: "tag",
+    title: "rakuten securities",
+    slug: { _type: "slug", current: "rakuten-securities" },
+  },
+  {
+    _id: "tag-crypto-investment-trusts",
+    _type: "tag",
+    title: "crypto investment trusts",
+    slug: { _type: "slug", current: "crypto-investment-trusts" },
+  },
+  {
+    _id: "tag-bitcoin-ethereum-funds",
+    _type: "tag",
+    title: "bitcoin ethereum funds",
+    slug: { _type: "slug", current: "bitcoin-ethereum-funds" },
+  },
+];
 
 // ── Article ──────────────────────────────────────────────────────────────────
 
 const article = {
-  _id: "drafts.morgan-stanley-bitcoin-etf-advisor-channel",
+  _id: "japan-crypto-investment-trusts-sbi-rakuten",
   _type: "article",
-  title:
-    "Morgan Stanley's Bitcoin ETF Bet Rests on Advisor Distribution, Not Just Fees",
+  title: "Japan Crypto Investment Trusts: SBI, Rakuten Gear Up",
   slug: {
     _type: "slug",
-    current: "morgan-stanley-bitcoin-etf-advisor-channel",
+    current: "japan-crypto-investment-trusts-sbi-rakuten",
   },
   category: { _ref: "category-crypto-newswire", _type: "reference" },
-  author: { _ref: "author-market-analyst", _type: "reference" },
+  author: {
+    _ref: "4c4e9409-351c-47a4-9034-91b27d8d5836",
+    _type: "reference",
+  },
+  tags: tags.map((tag) => ({ _ref: tag._id, _type: "reference" })),
   mainImage: {
     _type: "image",
-    alt: "Morgan Stanley Bitcoin ETF article cover image",
+    alt: "SBI and Rakuten preparing Japan crypto investment trusts",
   },
 
   body: [
-    richTextBlock([
-      "Morgan Stanley's Bitcoin ETF, MSBT, is entering the U.S. spot market with a 0.14% fee and the backing of one of Wall Street's largest advisory networks, setting up a fresh test of whether distribution can beat incumbency. The launch matters now because the spot Bitcoin ETF trade has moved past first-mover hype: scale already belongs to BlackRock, so Morgan Stanley has to turn advisor shelf space into repeat demand."
-    ]),
+    textBlock(
+      "SBI Securities and Rakuten Securities are preparing Japan crypto investment trusts that would move Bitcoin and Ether exposure into ordinary brokerage accounts rather than dedicated crypto wallets. The timing matters because Japan's Financial Services Agency is moving toward a fund-rule rewrite that could let investment trusts hold crypto assets by 2028.",
+    ),
 
-    textBlock("Morgan Stanley's Real Edge Sits Inside Its Advisor Channel", "h2"),
+    textBlock(
+      "Japan crypto investment trusts are moving from idea to product queue",
+      "h2",
+    ),
     richTextBlock([
-      "The headline number on Morgan Stanley's new fund is the fee, but the deeper story is distribution. In ",
+      "Japan's brokerage race is now visible at the product level. According to ",
       {
-        text: "Decrypt's report on the launch",
-        href: "https://decrypt.co/363531/captive-audience-drive-demand-morgan-stanley-bitcoin-etf-bloomberg-analyst",
+        text: "Cointelegraph's May 17 report",
+        href: "https://cointelegraph.com/news/sbi-rakuten-nomura-line-up-to-launch-crypto-investment-trusts-report",
       },
-      ", Bloomberg Intelligence ETF analyst Eric Balchunas argued that Morgan Stanley's \"captive audience\" could give the product a real opening even though it is arriving late. That phrase matters more than typical launch-day language because it points to the structure of the U.S. wealth business. A bank with thousands of advisors does not need to win every self-directed investor on day one. It needs to win inclusion on enough internal platforms, model portfolios, and client conversations to generate durable flows. That is a different playbook from the one that defined the first year of spot Bitcoin ETFs. Earlier winners built momentum through brand, liquidity, and early allocation enthusiasm. Morgan Stanley can instead sell familiarity. For readers tracking this institutional shift across ",
+      ", SBI Securities plans to sell products developed by SBI Global Asset Management, including investment trusts and ETFs focused on liquid crypto assets such as Bitcoin and Ethereum. Rakuten Securities is preparing a similar route with Rakuten Investment Management and other group firms, with the aim of letting clients trade the products through smartphone apps.",
+    ]),
+    textBlock(
+      "The same report said Nomura and Daiwa have announced plans to develop crypto investment trusts once the rulebook is set, while SMBC Group, including SMBC Nikko, has formed a cross-group task force. Asset Management One, linked to Mizuho Financial Group, has started early research. That is the part investors should not miss. This is no longer a single-bank experiment or a crypto exchange pitch. It is a coordinated product-readiness phase across Japan's largest brokerage groups, built before final regulatory clearance.",
+    ),
+
+    textBlock(
+      "Why Japan crypto investment trusts matter for retail access",
+      "h2",
+    ),
+    textBlock(
+      "Crypto exposure in Japan still carries friction that traditional fund products do not. A retail investor who wants spot Bitcoin or Ether exposure usually has to open a crypto exchange account, pass exchange-specific onboarding, understand custody choices, and accept a product experience that sits outside the normal securities account. Investment trusts would compress that workflow into the same brokerage rails used for stocks, funds, and other listed products.",
+    ),
+    richTextBlock([
+      "That shift matters for distribution. Cryptic Daily's ",
       {
         text: "Crypto Newswire",
         href: "/categories/crypto-newswire",
         blank: false,
       },
-      ", the signal is plain: MSBT does not need to become the biggest Bitcoin ETF to matter. If advisors treat it as the house product, Morgan Stanley gains a built-in funnel that most crypto-native issuers and even many legacy asset managers do not have."
+      " coverage has repeatedly tracked the same pattern in the U.S. and Europe: access changes behavior before ideology does. When crypto exposure is packaged inside regulated wrappers, allocators can size positions, report holdings, and manage risk through existing portfolio systems. Japan's version could be more conservative than U.S. spot ETFs, but it targets the same behavioral barrier. The story is less about a new crypto product and more about whether Japan's brokerage channel can turn Bitcoin and Ether into routine portfolio instruments.",
     ]),
 
-    textBlock("The 0.14% Fee Works as a Signal, Not Just a Price Cut", "h2"),
-    richTextBlock([
-      "Morgan Stanley's amended registration statement shows the trust will charge a ",
-      {
-        text: "0.14% annualized delegated sponsor fee",
-        href: "https://www.sec.gov/Archives/edgar/data/2103612/000110465926036138/tm2534140-10_s1a.htm",
-      },
-      ". That number is low enough to make headlines, but its job goes beyond undercutting rivals by a few basis points. In a product category where the underlying asset is the same and tracking error is expected to stay tight, fee language becomes positioning. Morgan Stanley is telling advisors and clients that it does not intend to arrive as a premium-priced latecomer. It wants to look disciplined, credible, and easy to defend in a fiduciary conversation. That matters because a cheap in-house product lets an advisor pitch convenience and platform alignment without appearing to steer assets into a more expensive wrapper. It also raises pressure on the rest of the field, because every issuer now has to answer a harder question: if a major bank can come in at 14 basis points, how much fee premium can anyone else still justify? The spot Bitcoin ETF market is no longer competing on access alone. It is competing on who can make access feel ordinary."
-    ]),
-
-    textBlock("BlackRock Still Owns the Benchmark Position", "h2"),
-    richTextBlock([
-      "Morgan Stanley may have a distribution edge, but it is still walking into a market where BlackRock has already become the default benchmark. On BlackRock's own ",
-      {
-        text: "iShares Bitcoin Trust page",
-        href: "https://www.ishares.com/us/products/333011/ishares-bitcoin-trust-etf",
-      },
-      ", IBIT showed $54.57 billion in net assets as of April 6, 2026, a 0.25% sponsor fee, and a 30-day average volume above 52 million shares. Those figures tell the real story. IBIT is not just large. It is liquid, heavily trafficked, and deeply familiar to allocators, traders, and advisors who already use the iShares complex across other exposures. Late entrants into ETF categories rarely beat the incumbent by being marginally cheaper. They usually need a structural difference, a captive channel, or a regulatory angle. Morgan Stanley appears to know that. It is not trying to rewrite the scorecard by pretending IBIT's head start does not exist. It is trying to shift the terms of competition from public market dominance to private client distribution. That is a smart read of the board. It also explains why this story belongs alongside broader institutional product buildout covered in ",
-      {
-        text: "Web3 Builder",
-        href: "/categories/web3-builder",
-        blank: false,
-      },
-      ". The asset is Bitcoin, but the battleground is the machinery that decides what gets surfaced, approved, and repeated across wealth platforms."
-    ]),
-
-    textBlock("A Bank-Issued ETF Changes the Tone of Bitcoin Distribution", "h2"),
-    richTextBlock([
-      "When Reuters reported in January that ",
-      {
-        text: "Morgan Stanley had become the first big U.S. bank to seek approval for its own Bitcoin and Solana ETFs",
-        href: "https://www.reuters.com/business/morgan-stanley-files-bitcoin-etf-2026-01-06/",
-      },
-      ", the filing looked like another sign of crypto normalization. It now looks like something more pointed. Banks have spent years acting as cautious intermediaries, offering access through private funds, approved products, or restricted channels while keeping public distance from full-throated crypto endorsement. A bank-branded Bitcoin ETF shifts that posture. It puts the institution's own name on the wrapper and turns Bitcoin exposure into a house product rather than a tolerated client request. Reuters also reported that Morgan Stanley expanded crypto access to all clients and account types in October. That context is what makes the ETF launch matter. MSBT is not a one-off experiment dropped into an isolated corner of the firm. It fits a broader arc in which large financial institutions are moving from custody and permissioning toward active packaging and advice. That does not erase risk, and it does not end the tension between compliance discipline and crypto volatility. But it does make Bitcoin harder to treat as a fringe allocation inside traditional wealth management."
-    ]),
-
-    textBlock("The Next Phase Turns on Model Portfolios and Allocation Language", "h2"),
-    richTextBlock([
-      "The most revealing line in this story may not come from the ETF filing at all. In Morgan Stanley's own ",
-      {
-        text: "crypto allocation guidance",
-        href: "https://www.morganstanley.com/insights/articles/how-to-invest-in-crypto-asset-allocation",
-      },
-      ", the firm says aggressive \"opportunistic growth\" portfolios can hold up to 4% in crypto, while more moderate models step down from there. That does not guarantee MSBT will be pushed across every account. It does show that the firm has already built a framework for talking about crypto in portfolio terms instead of novelty terms. Once that language exists, a bank-issued ETF becomes easier to place. This is where the launch could outpunch its raw day-one flows. If Morgan Stanley can connect internal allocation guidance, advisor education, and a low-cost in-house wrapper, it creates a cleaner path from research note to client implementation. That is the kind of plumbing that changes markets quietly. The first phase of spot Bitcoin ETFs was about approval, headlines, and pent-up demand. The next phase looks more procedural. Which products get approved on advisory platforms? Which ones fit house views on risk? Which ones can advisors explain in one sentence without opening a compliance fight?"
-    ]),
-
-    textBlock("ETF Flow Context Will Decide Whether the Channel Advantage Converts", "h2"),
-    richTextBlock([
-      "The advisor channel matters, but the broader flow tape still sets the mood. Spot Bitcoin ETFs remain highly visible sentiment vehicles, and traders continue to track relative momentum across issuers through tools like ",
-      {
-        text: "CoinGlass ETF flow data",
-        href: "https://www.coinglass.com/etf/bitcoin",
-      },
-      ". That means Morgan Stanley is launching into a market where distribution strength has to interact with broader ETF demand, Bitcoin price action, and the willingness of wealth platforms to treat crypto as a steady allocation rather than a tactical trade. If flows weaken across the category, MSBT's internal shelf space may help it hold attention. If flows stay strong, that same shelf space could accelerate adoption faster than many late entrants manage. Either way, the competitive question is no longer whether spot Bitcoin ETFs belong on Wall Street. That argument was settled when large asset managers won approval and built scale. The live question now is which institutions can translate brand, internal sales channels, and client trust into repeat asset gathering."
-    ]),
-
-    textBlock("The Competitive Story Is About Distribution Discipline", "h2"),
-    richTextBlock([
-      "If MSBT opens cleanly and wins fast placement on more advisor shelves, the spot Bitcoin ETF race will shift further away from launch-day spectacle and toward the slow mechanics of wealth management. That would make this less a story about one new ticker and more a story about whether Wall Street now treats Bitcoin exposure as a standard portfolio choice inside the firms that control client relationships at scale. It also sharpens the competitive frame for other issuers. BlackRock still owns the benchmark position. Fidelity still benefits from brand and early presence. But Morgan Stanley is trying to compete from inside the advisory stack, where client behavior can be shaped through platform defaults, house views, and internal product familiarity. That makes this a distribution story first, a fee story second, and a crypto market story only after those two pieces are understood. Readers following institutional product behavior and risk framing can track that broader theme across ",
-      {
-        text: "Web3 Fraud Files",
-        href: "/categories/web3-fraud-files",
-        blank: false,
-      },
-      ", where due diligence, wrapper design, and product framing often matter as much as the underlying asset."
-    ]),
-
-    richTextBlock([
-      "Morgan Stanley is entering the spot Bitcoin ETF market late, but not quietly. If the bank can pair low fees with advisor adoption and portfolio language that already exists inside the firm, MSBT could matter less as a market-share killer and more as a sign that Bitcoin exposure has moved deeper into the standard machinery of wealth management."
-    ]),
-
+    textBlock("Japan's fund-rule path is still the gating factor", "h2"),
     textBlock(
-      "This article is for informational purposes only and does not constitute financial or investment advice."
+      "The core regulatory issue is whether Japanese investment trusts can formally hold crypto assets as specified assets. Cointelegraph reported that Japan's FSA is moving to revise the enforcement order of the Investment Trust Act by 2028, which would add cryptocurrencies to the list of assets that investment trusts can hold. That timetable means the current brokerage preparations are early positioning, not completed product launches.",
+    ),
+    richTextBlock([
+      "Japan has been moving in stages. ",
+      {
+        text: "Reuters reported in March 2025",
+        href: "https://www.reuters.com/technology/japan-give-crypto-assets-legal-status-financial-products-nikkei-says-2025-03-30/",
+      },
+      " that the FSA planned to revise the Financial Instruments and Exchange Act to give crypto assets legal status as financial products and place them under insider-trading restrictions. ",
+      {
+        text: "Reuters also reported in October 2025",
+        href: "https://www.reuters.com/world/asia-pacific/japan-mulls-letting-banking-groups-offer-crypto-trading-services-nikkei-reports-2025-10-21/",
+      },
+      " that the regulator was considering changes that would let banking-group securities arms offer crypto trading services and compete with affiliates such as Rakuten Wallet and SBI Holdings units. Together, those steps point to a controlled migration from exchange-only access toward regulated financial-product access.",
+    ]),
+
+    textBlock("Brokerage groups gain control of the customer interface", "h2"),
+    textBlock(
+      "SBI and Rakuten are not just chasing another fee line. They are trying to own the interface through which Japanese clients receive crypto exposure. SBI's planned structure would place product design, asset management, and distribution inside the group. Rakuten's reported smartphone-app route points to the same logic: keep the investor inside the familiar securities interface, not outside it on a separate exchange account.",
+    ),
+    richTextBlock([
+      "That has market structure consequences. If crypto investment trusts become available through brokerage accounts, crypto exchanges may lose some high-value passive buyers while gaining institutional-style liquidity demand from fund issuers. Custody providers, index providers, market makers, and compliance teams become more central. The same logic appeared in Cryptic Daily's coverage of ",
+      {
+        text: "Franklin Templeton's crypto asset-management push",
+        href: "/news/franklin-templeton-250-digital-crypto",
+        blank: false,
+      },
+      ", where large managers used acquisitions and product design to pull crypto exposure deeper into regulated asset-management channels. Japan's brokerages are moving toward the same endpoint, but under a slower, rule-led domestic process.",
+    ]),
+
+    textBlock("Bitcoin and Ether are the first assets to watch", "h2"),
+    textBlock(
+      "Bitcoin and Ethereum are the natural starting points because liquidity, pricing depth, and investor recognition matter most when regulators assess fund suitability. Cointelegraph's report said SBI's planned products would focus on highly liquid assets such as Bitcoin and Ethereum. Current market data also shows why those two assets dominate the first-product conversation: Bitcoin traded near $77,943 and Ether near $2,183 on May 17, 2026, with both assets remaining the reference points for institutional crypto exposure.",
+    ),
+    textBlock(
+      "The risk is that retail access becomes easier before risk understanding improves. Japan's regulator has already signaled concern about volatility and loss disclosure. Reuters reported in October 2025 that bank-affiliated securities firms would be required to clearly explain crypto risks to retail investors if rules are changed. That points to a product market where disclosure, suitability, and risk labels may matter as much as fees. That is why the brokerage list matters. SBI, Rakuten, Nomura, Daiwa, SMBC Nikko, and Asset Management One serve different investor bases, but their shared direction signals that the next competitive fight may be distribution, not whether crypto belongs in regulated accounts. If the first products are limited to Bitcoin and Ether, the second wave could test whether diversified baskets can pass liquidity, custody, and disclosure reviews. For investors, the first signal to watch is not a marketing campaign from SBI or Rakuten. It is the legal text that defines which crypto assets funds can hold, what disclosures must accompany them, and whether tax treatment changes alongside fund eligibility.",
+    ),
+    textBlock(
+      "Japan's 2028 fund-rule timetable is now the key milestone. If the FSA finalizes the Investment Trust Act changes and the Financial Instruments and Exchange Act amendments move into effect in fiscal 2027, SBI, Rakuten, Nomura, and other brokers could already have the product stack ready for launch.",
+    ),
+    textBlock(
+      "This article is for informational purposes only and does not constitute financial or investment advice.",
     ),
   ],
 
   excerpt:
-    "Morgan Stanley's new Bitcoin ETF enters with a 0.14% fee, but the bigger story is whether its advisor network can turn late entry into durable demand.",
+    "SBI and Rakuten are preparing crypto investment trusts as Japan moves toward fund rules that could bring Bitcoin and Ether exposure into brokerage accounts by 2028, shifting access away from exchange-only rails.",
 
+  seoTitle: "Japan Crypto Investment Trusts: SBI, Rakuten Gear Up",
   seoDescription:
-    "Morgan Stanley's Bitcoin ETF launch tests whether advisor distribution and low fees can challenge incumbents like BlackRock in the U.S. spot market.",
+    "Japan crypto investment trusts from SBI and Rakuten could route Bitcoin and Ether exposure through brokerages as Japan rewrites fund rules in 2028.",
 
-  publishedAt: "2026-04-08T12:00:00.000Z",
+  publishedAt: "2026-05-17T15:30:00.000Z",
   featured: false,
   sponsored: false,
   noIndex: false,
@@ -222,33 +240,23 @@ const article = {
   sources: [
     {
       _key: key(),
-      label: "Decrypt",
-      url: "https://decrypt.co/363531/captive-audience-drive-demand-morgan-stanley-bitcoin-etf-bloomberg-analyst",
-    },
-    {
-      _key: key(),
-      label: "SEC S-1/A Filing",
-      url: "https://www.sec.gov/Archives/edgar/data/2103612/000110465926036138/tm2534140-10_s1a.htm",
-    },
-    {
-      _key: key(),
-      label: "BlackRock iShares Bitcoin Trust",
-      url: "https://www.ishares.com/us/products/333011/ishares-bitcoin-trust-etf",
+      label: "Cointelegraph",
+      url: "https://cointelegraph.com/news/sbi-rakuten-nomura-line-up-to-launch-crypto-investment-trusts-report",
     },
     {
       _key: key(),
       label: "Reuters",
-      url: "https://www.reuters.com/business/morgan-stanley-files-bitcoin-etf-2026-01-06/",
+      url: "https://www.reuters.com/technology/japan-give-crypto-assets-legal-status-financial-products-nikkei-says-2025-03-30/",
     },
     {
       _key: key(),
-      label: "Morgan Stanley Insights",
-      url: "https://www.morganstanley.com/insights/articles/how-to-invest-in-crypto-asset-allocation",
+      label: "Reuters",
+      url: "https://www.reuters.com/world/asia-pacific/japan-mulls-letting-banking-groups-offer-crypto-trading-services-nikkei-reports-2025-10-21/",
     },
     {
       _key: key(),
-      label: "CoinGlass Bitcoin ETF Data",
-      url: "https://www.coinglass.com/etf/bitcoin",
+      label: "Japan Financial Services Agency",
+      url: "https://www.fsa.go.jp/en/newsletter/weekly2026/686.html",
     },
   ],
 };
@@ -269,7 +277,7 @@ async function upload() {
 
   const mutations = [
     { createIfNotExists: categoryDoc },
-    { createIfNotExists: authorMarketAnalyst },
+    ...tags.map((tag) => ({ createIfNotExists: tag })),
     { createOrReplace: article },
   ];
 

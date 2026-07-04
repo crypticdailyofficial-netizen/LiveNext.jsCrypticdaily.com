@@ -43,7 +43,7 @@ const AD_PACKAGES = [
     features: [
       "Written by your team or ours",
       "Published as clearly labelled 'Sponsored'",
-      "Indexed and SEO-friendly",
+      "Clearly labeled sponsored content",
       "Promoted via our newsletter",
     ],
   },

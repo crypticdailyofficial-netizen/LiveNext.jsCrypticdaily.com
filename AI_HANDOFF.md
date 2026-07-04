@@ -1,579 +1,728 @@
 # AI Handoff: Cryptic Daily
 
-Last updated: 2026-04-05
+Last updated: 2026-07-04
 
-This document is the real working handoff for the project. The current [README.md](README.md) is still boilerplate and does not reflect the actual app.
+This is the current working handoff for Cryptic Daily. It is written for another developer or AI agent taking over the repo. It covers the app architecture, Sanity CMS setup, operational risks, recent AdSense cleanup work, and the exact Sanity/MCP situation.
 
-## 1. Project Summary
+## Project Summary
 
-Cryptic Daily is a Next.js App Router news site backed by Sanity CMS. It publishes crypto news, analysis, regulatory coverage, and fraud/exploit stories. The frontend is highly custom-styled with heavy Tailwind usage, custom editorial hero layouts, and CMS-driven article/category/author pages.
+Cryptic Daily is a crypto news publication built with Next.js App Router and Sanity CMS. It publishes crypto market news, DeFi coverage, regulation stories, builder/infrastructure stories, and Web3 fraud/exploit reporting.
 
-Core product behaviors:
+The site is content-heavy and SEO-sensitive. Most pages are CMS-backed, statically generated or ISR-cached, and deployed through Vercel.
 
-- Homepage pulls a featured article, latest articles, category summaries, and a Sanity-backed total article count.
-- News article pages are statically generated from Sanity slugs.
-- Search is server-backed through a Next.js API route, not direct browser-to-Sanity calls.
-- About page now pulls authors and latest articles from Sanity.
-- Newsletter signup uses Supabase.
-- Sanity Studio is embedded in the app under `/studio`.
+Core user-facing areas:
 
-## 2. Stack
+- Homepage: featured story, latest stories, categories, ticker, latest feed.
+- News index: latest articles from Sanity.
+- Article detail pages: `/news/[slug]`.
+- Category pages: `/categories/[category]`.
+- Author pages: `/author/[slug]`.
+- Search page: `/search`.
+- Static legal/trust pages: About, Contact, Advertise, Editorial Policy, Privacy Policy, Terms, Disclaimer.
+- Sanity Studio: embedded at `/studio`.
+- RSS feed: `/feed`.
+- Dynamic sitemap: `/sitemap.xml`.
 
-- Framework: Next.js 16.1.6
-- React: 19.2.3
-- Styling: Tailwind CSS v4
-- CMS: Sanity + `next-sanity`
-- Rich text: Portable Text
-- Database/service integration: Supabase only for newsletter signup
-- Deployment: Vercel
+## Tech Stack
 
-Main package entry points are defined in [package.json](package.json).
+- Framework: Next.js `16.1.6`.
+- React: `19.2.3`.
+- Styling: Tailwind CSS v4 with heavily custom page designs.
+- CMS: Sanity, `next-sanity`, `@sanity/client`, `@sanity/image-url`.
+- Rich text rendering: Portable Text via `@portabletext/react`.
+- Dates: `date-fns`.
+- Newsletter storage: Supabase server client, but current local env is missing Supabase keys.
+- Ads/analytics: Google AdSense and GA IDs are present in env.
+- Deployment target: Vercel.
 
-## 3. Current Repo State
-
-Git remote:
-
-- `origin`: `https://github.com/crypticdailyofficial-netizen/crypticdaily-next.js.git`
-
-Linked Vercel project:
-
-- `projectId`: `prj_zuXPrlkmPKGlbWxmsO9bMDcDAEW6`
-- `orgId`: `team_YWwjFSMWONGUQemMfuKL18yu`
-- Source: [.vercel/project.json](.vercel/project.json)
-
-Current uncommitted local files at the time of writing:
-
-- `AI_HANDOFF.md`
-- `inject-external-links.mjs`
-- `remove-listed-articles-and-tags.mjs`
-- `upload-clarity-act.mjs`
-
-These are root-level maintenance scripts and are not yet committed.
-
-## 4. High-Level File Map
-
-Important directories:
-
-- [`app`](app): App Router routes, APIs, sitemap, RSS feed, layout
-- [`components`](components): article UI, layout, home sections, SEO helpers
-- [`lib`](lib): constants, utilities, Sanity and Supabase integration
-- [`sanity`](sanity): Studio config and document schemas
-- [`scripts`](scripts): one small Sanity connectivity script
-- root `.mjs` scripts: ad hoc editorial / CMS maintenance utilities
-
-Key route files:
-
-- [app/layout.tsx](app/layout.tsx): global layout, metadata, ticker, navbar, footer
-- [app/page.tsx](app/page.tsx): homepage server data fetch
-- [app/(main)/news/[slug]/page.tsx](app/(main)/news/[slug]/page.tsx): article detail page
-- [app/(main)/search/page.tsx](app/(main)/search/page.tsx): search route wrapper
-- [app/(main)/search/SearchClient.tsx](app/(main)/search/SearchClient.tsx): client search UI
-- [app/(main)/about/page.tsx](app/(main)/about/page.tsx): About page with Sanity authors
-- [app/feed/route.ts](app/feed/route.ts): RSS feed
-- [app/api/search/route.ts](app/api/search/route.ts): server-backed search
-- [app/api/newsletter/route.ts](app/api/newsletter/route.ts): newsletter signup
-- [app/sitemap.ts](app/sitemap.ts): dynamic sitemap generation
-- [app/(admin)/studio/[[...tool]]/page.tsx](app/(admin)/studio/[[...tool]]/page.tsx): embedded Sanity Studio
-
-## 5. Runtime Architecture
-
-### Layout
-
-[app/layout.tsx](app/layout.tsx) wraps the site with:
-
-- `PriceTicker`
-- `Navbar`
-- page content
-- `Footer`
-
-It also injects `Organization` and `WebSite` JSON-LD.
-
-Important note:
-
-- It uses Google fonts via `next/font/google` (`Inter` and `Space_Grotesk`).
-- In some restricted local environments, `next build` can fail if fonts cannot be fetched.
-- Vercel production builds have succeeded, but sandboxed/offline local builds may behave differently.
-
-### Homepage
-
-[app/page.tsx](app/page.tsx) fetches:
-
-- featured article
-- latest 24 articles
-- all categories
-- total article count
-
-The count is Sanity-backed. The grid still renders a latest-24 slice, not the entire archive.
-
-### Article Pages
-
-[app/(main)/news/[slug]/page.tsx](app/(main)/news/[slug]/page.tsx):
-
-- statically generates pages from Sanity article slugs
-- renders Portable Text with inline links and images
-- loads related articles by category
-- loads sidebar latest articles
-- injects `ArticleJsonLd` and breadcrumb schema
-
-### Search
-
-Search used to be browser-to-Sanity and broke on deployed environments. It is now server-backed:
-
-- UI: [app/(main)/search/SearchClient.tsx](app/(main)/search/SearchClient.tsx)
-- API: [app/api/search/route.ts](app/api/search/route.ts)
-
-Search flow:
-
-- Client reads `q` from the URL
-- Client requests `/api/search?q=...`
-- API uses `searchArticles()` from `lib/sanity/queries.ts`
-- Results are returned as mapped article cards
-
-Search page metadata is `noindex`.
-
-### About Page
-
-[app/(main)/about/page.tsx](app/(main)/about/page.tsx) now pulls:
-
-- author list from Sanity
-- latest articles from Sanity
-- article count from slug list length
-- category count from category array length
-
-Operational note:
-
-- This page is effectively static unless the route is redeployed or changed to revalidate more explicitly.
-- If authors are changed in Sanity and the page does not update, redeploy first.
-
-### RSS Feed
-
-[app/feed/route.ts](app/feed/route.ts):
-
-- uses `dynamic = "force-dynamic"`
-- creates its own Sanity client instead of relying on the shared fallback client
-- returns an empty feed instead of crashing if Sanity env vars are missing
-
-This was done specifically to avoid Vercel build-time failures.
-
-### Newsletter
-
-[app/api/newsletter/route.ts](app/api/newsletter/route.ts):
-
-- validates email shape
-- inserts into Supabase `newsletter_subs`
-- treats PostgreSQL unique violation `23505` as "Already subscribed!"
-
-The route assumes a `newsletter_subs` table exists and that email uniqueness is enforced there.
-
-## 6. Sanity Integration
-
-### Core Files
-
-- [lib/sanity/client.ts](lib/sanity/client.ts)
-- [lib/sanity/queries.ts](lib/sanity/queries.ts)
-- [lib/sanity/adapters.ts](lib/sanity/adapters.ts)
-- [lib/sanity/image.ts](lib/sanity/image.ts)
-
-### Important Behavior
-
-[lib/sanity/client.ts](lib/sanity/client.ts) is intentionally defensive:
-
-- if `NEXT_PUBLIC_SANITY_PROJECT_ID` or `NEXT_PUBLIC_SANITY_DATASET` is missing, it falls back to a fake client
-- that fake client returns `null` on fetch
-- result: the site builds without crashing, but pages render with empty content
-
-This is useful operationally, but it also means "site is empty" is often an env-var problem, not a rendering bug.
-
-Preview/draft behavior:
-
-- if `NODE_ENV !== "production"` and `SANITY_API_TOKEN` exists, the client uses `perspective: "drafts"`
-- in production it uses `published`
-
-### Adapters
-
-[lib/sanity/adapters.ts](lib/sanity/adapters.ts) maps raw Sanity records into frontend-safe shapes.
-
-Relevant mapped concepts:
-
-- articles
-- authors
-- categories
-
-### Queries
-
-[lib/sanity/queries.ts](lib/sanity/queries.ts) is the main CMS query hub.
-
-Important query groups:
-
-- homepage content
-- article detail and related content
-- category archives
-- author pages
-- search
-- RSS data
-- sitemap slug queries
-
-## 7. Sanity Content Model
-
-### Article
-
-Defined in [sanity/schemas/article.ts](sanity/schemas/article.ts).
-
-Important fields:
-
-- `title`
-- `slug`
-- `author` reference
-- `coverImage`
-- `category` reference
-- `tags` array of references
-- `excerpt`
-- `body` Portable Text
-- `publishedAt`
-- `sources`
-- `updatedAt`
-- `seoTitle`
-- `seoDescription`
-- `canonicalUrl`
-- `noIndex`
-- `featured`
-- `sponsored`
-- `contentWarning`
-
-Portable Text supports:
-
-- normal text
-- `h2`, `h3`, `h4`
-- blockquote
-- inline link annotations
-- inline images with alt/caption
-
-### Author
-
-Defined in [sanity/schemas/author.ts](sanity/schemas/author.ts).
-
-Important fields:
-
-- `name`
-- `slug`
-- `avatar`
-- `role`
-- `credentials`
-- `bio`
-- `twitter`
-- `linkedin`
-- `sameAs`
-
-### Category
-
-Defined in [sanity/schemas/category.ts](sanity/schemas/category.ts).
-
-Important fields:
-
-- `title`
-- `slug`
-- `description`
-- `color`
-- `seoTitle`
-
-### Tag
-
-Defined in [sanity/schemas/tag.ts](sanity/schemas/tag.ts).
-
-Important fields:
-
-- `title`
-- `slug`
-- `description`
-
-## 8. Sanity Studio
-
-Studio config lives in [sanity/sanity.config.ts](sanity/sanity.config.ts).
-
-It:
-
-- uses `NEXT_PUBLIC_SANITY_PROJECT_ID`
-- uses `NEXT_PUBLIC_SANITY_DATASET`
-- exposes lists for Articles, Featured Articles, noIndex Articles, Authors, Categories, and Tags
-- includes `visionTool`
-
-Studio route:
-
-- [app/(admin)/studio/[[...tool]]/page.tsx](app/(admin)/studio/[[...tool]]/page.tsx)
-
-Important fix already in place:
-
-- the Studio route is a client component using `NextStudio` directly
-- this avoids the old `next/dynamic` + `ssr: false` App Router build error on Vercel
-
-## 9. Environment Variables
-
-Main env vars used in this project:
-
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Yes for content | Sanity project id for frontend and Studio |
-| `NEXT_PUBLIC_SANITY_DATASET` | Yes for content | Sanity dataset |
-| `SANITY_API_TOKEN` | Optional for published reads, needed for scripts/drafts/private access | Authenticated Sanity access |
-| `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical/base site URL |
-| `NEXT_PUBLIC_SITE_NAME` | Optional | Site name override |
-| `NEXT_PUBLIC_SUPABASE_URL` | Required for newsletter | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Preferred for server route | Newsletter insert access |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Fallback | Used if service role key is missing |
-
-Operational notes:
-
-- Vercel must have Sanity env vars in both `Production` and `Preview` if you want both environments to show content.
-- If preview envs are missing, preview deployments render empty content because of the fallback Sanity client.
-
-## 10. Deployment Notes
-
-Current deployment platform is Vercel.
-
-Known deployment characteristics:
-
-- `main` is used for production pushes
-- the app has been successfully deployed with search, feed, and sitemap
-- the linked project is defined in `.vercel/project.json`
-
-Custom domain:
-
-- The site has been deployed to `www.crypticdaily.com` in recent operations
-
-Potential domain/canonical mismatch:
-
-- [lib/constants.ts](lib/constants.ts) defaults `SITE_URL` to `https://crypticdaily.com`
-- if Vercel primary domain is `www.crypticdaily.com`, canonical URLs and metadata should eventually be aligned
-
-Useful deploy command:
-
-```bash
-npx vercel deploy --prod --yes
-```
-
-Useful verification commands:
-
-```bash
-./node_modules/.bin/tsc --noEmit --pretty false
-npm run build
-```
-
-## 11. Sitemap and Indexing Rules
-
-[app/sitemap.ts](app/sitemap.ts) generates URLs for:
-
-- static pages
-- article pages
-- category pages
-- author pages
-
-Category inclusion rule:
-
-- only categories with `articleCount >= 3` are included
-
-Search page:
-
-- explicitly `noindex`
-
-Feed:
-
-- exposed at `/feed`
-
-## 12. Supabase Usage
-
-Currently, Supabase is only used for newsletter signup.
-
-Relevant files:
-
-- [lib/supabase/server.ts](lib/supabase/server.ts)
-- [app/api/newsletter/route.ts](app/api/newsletter/route.ts)
-
-Note:
-
-- [lib/supabase/types.ts](lib/supabase/types.ts) still contains old bookmark/comment/article-view types
-- those features were removed from the site, so this file is partially stale
-
-## 13. Maintenance Scripts
-
-### `upload-clarity-act.mjs`
-
-Purpose:
-
-- uploads a hardcoded CLARITY Act article document to Sanity
-
-Status:
-
-- currently untracked
-- now loads `.env.local`
-- supports `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_TOKEN`
-
-Important caveat:
-
-- category, author, and tag `_ref` values in the document are hardcoded placeholders and may need manual adjustment before use
-
-### `remove-listed-articles-and-tags.mjs`
-
-Purpose:
-
-- deletes a hardcoded list of article titles
-- deletes tag documents only when those tags become orphaned after deletion
-
-Status:
-
-- currently untracked
-- currently `DRY_RUN = true`
-
-### `inject-external-links.mjs`
-
-Purpose:
-
-- despite the filename, it currently removes a specific set of previously injected external H2 links from one article
-
-Status:
-
-- currently untracked
-- currently `DRY_RUN = false`
-
-Important caveat:
-
-- the filename no longer matches the current behavior
-- rename it if this script will be kept long-term
-
-### `scripts/test-sanity.ts`
-
-Purpose:
-
-- simple connectivity test for Sanity
-
-Important caveat:
-
-- it uses a hardcoded project id
-- treat it as a scratch script, not production-safe tooling
-
-## 14. Recent Functional Changes
-
-These are the high-impact changes that define the current app behavior:
-
-- Search was moved to `/api/search` so deployed search no longer depends on browser-to-Sanity access.
-- About page authors and latest content are now Sanity-driven instead of placeholder-only.
-- Public tag archive pages were removed; article body links to `/tags` are suppressed at render time.
-- RSS feed was hardened to avoid build failures when Sanity env vars are missing.
-- Studio route was corrected for App Router/Vercel compatibility.
-- Old auth/comments/bookmarks/dashboard/market widgets were removed from the shipped app.
-
-## 15. Known Issues and Sharp Edges
-
-### Boilerplate README
-
-- [README.md](README.md) is still default Next.js boilerplate.
-
-### Duplicate Contact File
-
-- [app/(main)/contact/page (1).tsx](app/(main)/contact/page%20(1).tsx) exists alongside the real contact route file.
-- This looks like an accidental duplicate and should be removed.
-
-### Stale Supabase Types
-
-- [lib/supabase/types.ts](lib/supabase/types.ts) still mentions bookmarks/comments/views even though those features were removed.
-
-### Domain Consistency
-
-- Check whether the live primary domain is `crypticdaily.com` or `www.crypticdaily.com`.
-- Then align `NEXT_PUBLIC_SITE_URL`, `SITE_URL`, canonical tags, and sitemap output.
-
-### Local Font Fetching
-
-- Restricted local environments can fail on Google font fetches during `next build`.
-- This is environmental, not necessarily a project code issue.
-
-### Security
-
-- The `SANITY_API_TOKEN` was exposed during prior manual operations outside the repo.
-- Rotate it if this has not already been done.
-- Never commit secrets into any `.mjs` script or into git-tracked files.
-
-## 16. Suggested Next Cleanup
-
-- Replace the boilerplate `README.md` with a real project README or point it to this handoff.
-- Delete `app/(main)/contact/page (1).tsx`.
-- Rename `inject-external-links.mjs` to match what it currently does.
-- Decide whether the root utility scripts should be committed or kept local-only.
-- Remove stale bookmark/comment/view types from `lib/supabase/types.ts` if no longer needed.
-- Align canonical domain configuration with the actual Vercel primary domain.
-- Consider adding explicit revalidation strategy for About and other content pages that should update without redeploys.
-
-## 17. Practical Debug Checklist
-
-If production shows no articles:
-
-- check `NEXT_PUBLIC_SANITY_PROJECT_ID`
-- check `NEXT_PUBLIC_SANITY_DATASET`
-- check whether the deployment is `Preview` vs `Production`
-- remember the fallback Sanity client returns empty data rather than crashing
-
-If search is broken:
-
-- test `/api/search?q=bitcoin`
-- inspect [app/api/search/route.ts](app/api/search/route.ts)
-- inspect [lib/sanity/queries.ts](lib/sanity/queries.ts) search query
-
-If newsletter signup is failing:
-
-- check Supabase env vars
-- verify `newsletter_subs` exists
-- verify unique constraint on email if duplicate handling is expected
-
-If Vercel build fails around Studio:
-
-- check [app/(admin)/studio/[[...tool]]/page.tsx](app/(admin)/studio/[[...tool]]/page.tsx)
-- do not reintroduce `next/dynamic(..., { ssr: false })` in a server component
-
-If RSS or sitemap fails at build time:
-
-- inspect [app/feed/route.ts](app/feed/route.ts)
-- inspect [app/sitemap.ts](app/sitemap.ts)
-- confirm Sanity env vars are present
-
-## 18. Commands Worth Remembering
-
-Local dev:
+Main scripts in `package.json`:
 
 ```bash
 npm run dev
+npm run build
+npm run start
+npm run lint
 ```
 
-Typecheck:
+Important warning: `npm run lint` currently fails because the repo has ESLint 9 installed but no `eslint.config.*` flat config. TypeScript checks and production build have been used for verification instead:
 
 ```bash
-./node_modules/.bin/tsc --noEmit --pretty false
-```
-
-Production build:
-
-```bash
+npx tsc --noEmit --pretty false
 npm run build
 ```
 
-Deploy:
+## Repository Map
 
-```bash
-npx vercel deploy --prod --yes
+Important directories and files:
+
+- `app/`: Next.js App Router routes, API routes, sitemap, robots, feed, layout.
+- `components/`: UI components for articles, homepage, layout, ads, SEO helpers.
+- `lib/`: Sanity clients, GROQ queries, adapters, utilities, constants, Supabase helper.
+- `sanity/`: Sanity Studio config and schemas.
+- `sanitymjs/`: one-off CMS maintenance/upload scripts. These mutate Sanity when run with a token.
+- `public/`: static images.
+- `types/`: shared TypeScript types.
+
+Key frontend routes:
+
+- `app/page.tsx`: homepage server data fetch.
+- `components/home/HomePageClient.tsx`: homepage client composition.
+- `components/home/Hero.jsx`: homepage hero article card.
+- `components/home/LatestNewsSection.tsx`: homepage latest news area.
+- `app/(main)/news/[slug]/page.tsx`: article detail route.
+- `app/(main)/news/page.tsx`: news listing.
+- `app/(main)/categories/[category]/page.tsx`: category archive.
+- `app/(main)/author/[slug]/page.tsx`: author profile pages.
+- `app/(main)/author/market-analyst/route.ts`: hard `410 Gone` route for removed low-value author URL.
+- `app/(main)/search/page.tsx` and `app/(main)/search/SearchClient.tsx`: search page.
+- `app/api/search/route.ts`: search API.
+- `app/api/revalidate/route.ts`: Sanity webhook revalidation endpoint.
+- `app/feed/route.ts`: RSS feed.
+- `app/sitemap.ts`: dynamic sitemap.
+- `app/robots.ts`: robots.txt config.
+- `app/(admin)/studio/[[...tool]]/page.tsx`: embedded Sanity Studio.
+
+## Sanity CMS Integration
+
+### Current Sanity Access Pattern
+
+This project does not currently use a configured Sanity MCP server in the repo or in the current Codex workspace.
+
+Sanity is accessed through:
+
+- `next-sanity` for app-side reads.
+- `@sanity/client` in maintenance scripts.
+- direct HTTP mutation calls in some `sanitymjs/*.mjs` scripts.
+- embedded Sanity Studio through `next-sanity/studio`.
+- Sanity webhook parsing through `next-sanity/webhook`.
+
+### MCP Server Status
+
+Important for the next AI/developer:
+
+- No Sanity MCP server config file exists in this repository.
+- No Sanity MCP tool was used for the fixes in this thread.
+- All Sanity checks/mutations were done with Sanity API clients and `.env.local` values.
+- If you want to use a Sanity MCP server later, configure it separately in your AI client and give it project ID, dataset, and a read/write token. Do not commit token values.
+
+Suggested description for a colleague:
+
+```text
+Sanity MCP is not part of this repo. Use the app's existing Sanity SDK clients unless your local AI tool has a separately configured Sanity MCP server. Required access is equivalent to GROQ read plus mutations for author/article cleanup.
 ```
 
-Sanity utility scripts:
+### Sanity Project Env Vars
+
+Required for the app to show content:
 
 ```bash
-node upload-clarity-act.mjs
-node remove-listed-articles-and-tags.mjs
-node inject-external-links.mjs
+NEXT_PUBLIC_SANITY_PROJECT_ID
+NEXT_PUBLIC_SANITY_DATASET
+SANITY_API_TOKEN
+SANITY_WEBHOOK_SECRET
 ```
 
-## 19. Bottom Line
+Observed local env status on 2026-07-04:
 
-The app is a Sanity-backed crypto news site with a fairly custom App Router frontend and a Vercel deployment workflow. The biggest things a future agent needs to know are:
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`: set
+- `NEXT_PUBLIC_SANITY_DATASET`: set
+- `SANITY_API_TOKEN`: set
+- `SANITY_WEBHOOK_SECRET`: set
+- Supabase public/service keys: missing locally
+- AdSense and GA public IDs: set locally
 
-- content issues are often env-var or publish-state issues, not rendering issues
-- search is server-backed now and should stay that way
-- tags still exist in Sanity and search logic, but there are no public tag archive routes
-- root `.mjs` scripts are operational tools, not polished product code
-- the repo still has some cleanup debt, but the shipped routes are working
+Never paste or commit actual env values.
+
+### Core Sanity Files
+
+- `lib/sanity/client.ts`: shared app Sanity client.
+- `lib/sanity/queries.ts`: GROQ query hub.
+- `lib/sanity/adapters.ts`: maps raw Sanity records into frontend `Article`, author, and category shapes.
+- `lib/sanity/image.ts`: Sanity image URL builder.
+- `sanity/sanity.config.ts`: embedded Studio config.
+- `sanity/sanity.cli.ts`: Sanity CLI config.
+- `sanity/schemas/article.ts`: article schema.
+- `sanity/schemas/author.ts`: author schema.
+- `sanity/schemas/category.ts`: category schema.
+- `sanity/schemas/tag.ts`: tag schema.
+
+### Sanity Client Behavior
+
+`lib/sanity/client.ts` reads:
+
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`
+- `NEXT_PUBLIC_SANITY_DATASET`
+- `SANITY_API_TOKEN`
+
+If project ID or dataset are missing, it uses a fake fallback client that returns empty/null data instead of crashing. This prevents builds from failing, but it can produce empty pages. If the site suddenly looks empty, check env vars before debugging React.
+
+Preview/draft behavior:
+
+- In non-production with `SANITY_API_TOKEN`, the client uses `perspective: "drafts"`.
+- In production it uses `perspective: "published"`.
+- `useCdn` is disabled for local preview/draft reads and enabled for production published reads.
+
+### Sanity Studio
+
+Studio is embedded at:
+
+```text
+/studio
+```
+
+Config:
+
+- `sanity/sanity.config.ts`
+- Studio title: `Cryptic Daily`
+- Studio host in CLI config: `cryptic-daily`
+- Plugins:
+  - `structureTool`
+  - `visionTool` for GROQ query testing
+
+Studio navigation currently groups:
+
+- All Articles
+- Featured Article
+- noIndex Articles
+- Authors
+- Categories
+- Tags
+
+## Sanity Content Model
+
+### Article
+
+Schema: `sanity/schemas/article.ts`
+
+Important fields:
+
+- `title`: required string, max 100.
+- `slug`: required slug, max 96.
+- `author`: required reference to author.
+- `coverImage`: required image with required `alt`.
+- `category`: required reference.
+- `tags`: optional array of tag references.
+- `excerpt`: required text, max 200.
+- `body`: required Portable Text array.
+- `publishedAt`: required datetime.
+- `sources`: optional source label/url array.
+- `updatedAt`: optional freshness datetime.
+- `seoTitle`: optional max 60.
+- `seoDescription`: optional max 160.
+- `canonicalUrl`: optional.
+- `noIndex`: boolean for hidden content.
+- `featured`: boolean for homepage feature.
+- `sponsored`: boolean for sponsorship disclosure.
+
+Frontend article routes use `slug.current` as `/news/[slug]`.
+
+### Author
+
+Schema: `sanity/schemas/author.ts`
+
+Important fields:
+
+- `name`: required.
+- `slug`: required.
+- `avatar`: image.
+- `role`: title/position.
+- `credentials`: public E-E-A-T credibility text.
+- `bio`: detailed author bio.
+- `twitter`, `linkedin`, `sameAs`: identity links.
+
+Current real authors in Sanity:
+
+- Berat Oshily: `berat-oshily`
+- Marcus Bishop: `marcus-bishop`
+- Zashleen Singh: `zashleen-singh`
+
+Important: the old generic `Market Analyst` author has been removed from Sanity and source upload scripts.
+
+### Category
+
+Schema: `sanity/schemas/category.ts`
+
+Current public categories:
+
+- `crypto-newswire`
+- `web3-builder`
+- `web3-fraud-files`
+
+### Tag
+
+Schema: `sanity/schemas/tag.ts`
+
+Tags still exist in Sanity and article data, but there are no public tag archive pages in the app.
+
+## Data Flow
+
+### Homepage
+
+File: `app/page.tsx`
+
+Fetches in parallel:
+
+- `getHomepageFeaturedArticle()`
+- `getHomepageLatestArticles(12)`
+- `getAllCategories()`
+- `getTotalArticleCount()`
+
+Then maps with:
+
+- `mapSanityArticle`
+- `mapSanityArticles`
+- `mapSanityCategories`
+- `dedupeArticles`
+
+Homepage latest card reading time depends on `homepageArticleCardFields` including:
+
+```groq
+"bodyText": pt::text(body)
+```
+
+Do not remove that field. It was added to fix homepage cards showing `1 min read` while article pages showed `6-8 min read`.
+
+### Article Detail Pages
+
+File: `app/(main)/news/[slug]/page.tsx`
+
+Behavior:
+
+- `generateStaticParams()` loads all article slugs.
+- `generateMetadata()` loads the article for SEO metadata.
+- Page fetches article by slug.
+- If no article, calls `notFound()`.
+- Renders Portable Text.
+- Injects Article JSON-LD and Breadcrumb JSON-LD.
+- Fetches related articles and sidebar latest articles.
+
+Important issue still known from production:
+
+- Missing article slugs can render the 404 UI with HTTP 200 in production. This created soft-404 problems for old ghost article URLs.
+- A broader fix should add hard `404`/`410` handling for known removed article URLs or improve route behavior so missing CMS content does not return a soft 404.
+
+### News Listing
+
+File: `app/(main)/news/page.tsx`
+
+Fetches:
+
+- `getAllArticles(0, 24)`
+- `getLatestArticles(5)`
+
+Maps through `mapSanityArticles`.
+
+### Category Pages
+
+File: `app/(main)/categories/[category]/page.tsx`
+
+Fetches categories, category info, articles by category, and latest/sidebar content. Category pages are ISR cached with `revalidate = 120`.
+
+### Author Pages
+
+File: `app/(main)/author/[slug]/page.tsx`
+
+Fetches:
+
+- `AUTHOR_BY_SLUG_QUERY`
+- `ARTICLES_BY_AUTHOR_QUERY`
+
+The removed low-value author route is handled separately:
+
+- `app/(main)/author/market-analyst/route.ts`
+- returns `410 Gone`
+- includes `X-Robots-Tag: noindex, nofollow`
+
+This was added because `/author/market-analyst` was a low-value/empty author page concern.
+
+### Search
+
+Files:
+
+- `app/(main)/search/page.tsx`
+- `app/(main)/search/SearchClient.tsx`
+- `app/api/search/route.ts`
+
+Search flow:
+
+1. Client reads query from URL.
+2. Client requests `/api/search?q=...`.
+3. API calls `searchArticles(search)`.
+4. API maps results with `mapSanityArticles`.
+
+Search metadata is `noindex`.
+
+### RSS Feed
+
+File: `app/feed/route.ts`
+
+It creates its own Sanity client and returns RSS XML. It is resilient to missing Sanity env vars and returns an empty feed rather than crashing.
+
+### Sitemap
+
+File: `app/sitemap.ts`
+
+Generates:
+
+- static routes
+- article routes from Sanity slugs
+- category routes only if category has at least 3 articles
+- author routes from Sanity authors
+
+Uses `sanityClient.withConfig({ useCdn: false })`.
+
+### Robots
+
+File: `app/robots.ts`
+
+Currently:
+
+- Allows `/`
+- Disallows `/studio/`
+- Disallows `/api/`
+- Points to sitemap.
+
+## Revalidation
+
+File: `app/api/revalidate/route.ts`
+
+This route expects a signed Sanity webhook. It uses:
+
+```ts
+parseBody(req, process.env.SANITY_WEBHOOK_SECRET)
+```
+
+On valid webhook body:
+
+- Revalidates `/news/${slug}` if a slug is present.
+- Revalidates `/articles/${slug}` even though public article URLs are now `/news/[slug]`.
+- Revalidates `/`, `/news`, `/articles`.
+
+Notes:
+
+- `/articles` appears to be legacy and may be removable later.
+- If Sanity updates do not appear, verify `SANITY_WEBHOOK_SECRET` and webhook signature setup in Sanity.
+
+## Recent Fixes Completed
+
+These fixes were done before this handoff and should not be undone.
+
+### About Page Counters
+
+Files:
+
+- `app/(main)/about/page.tsx`
+- `app/(main)/about/AboutContent.tsx`
+
+Problem:
+
+- About page showed `0+ articles published` and `0 content categories` when Sanity fetches returned empty.
+
+Fix:
+
+- `AboutContent.tsx` already rendered props correctly.
+- `about/page.tsx` now falls back to:
+  - articles: `48`
+  - categories: `3`
+
+### Relative Date Display
+
+File:
+
+- `lib/utils.ts`
+
+Problem:
+
+- Articles from May 17-18 2026 showed as `about 5 hours ago` even when current date was June 7 2026.
+
+Fix:
+
+- `formatRelativeDate()` now explicitly creates `const now = new Date()` and uses `isSameDay(date, now)` and `formatDistance(date, now)`.
+- Older dates render as `MMM d, yyyy`.
+
+### Reading Time Consistency
+
+Files:
+
+- `lib/sanity/queries.ts`
+- `lib/sanity/adapters.ts`
+
+Problem:
+
+- Homepage cards showed `1 min read` because homepage GROQ projections only included excerpts.
+- Article pages showed 6-8 minute reads because they had full body text.
+
+Fix:
+
+- `homepageArticleCardFields` now includes `"bodyText": pt::text(body)`.
+- `mapSanityArticle()` calculates reading time from excerpt + body text.
+
+### Market Analyst Author Cleanup
+
+Files:
+
+- `app/(main)/author/market-analyst/route.ts`
+- `sanitymjs/upload-article.mjs`
+- `sanitymjs/upload-clarity-act.mjs`
+- `sanitymjs/upload-all-articles.mjs`
+
+Problem:
+
+- Generic `Market Analyst` author page was empty/low-value.
+- Some upload scripts could recreate `author-market-analyst`.
+
+Fix:
+
+- Confirmed Sanity had no `Market Analyst` author and no live article references.
+- Removed `author-market-analyst` creation from upload scripts.
+- Reassigned script article references to Marcus Bishop (`author-alex-carter`).
+- Added `/author/market-analyst` route returning `410 Gone` and `X-Robots-Tag: noindex, nofollow`.
+
+### Contact Page Jurisdiction Signal
+
+File:
+
+- `app/(main)/contact/ContactContent.tsx`
+
+Added visible line:
+
+```text
+Editorial team based in the European Union
+```
+
+This was added as a legal/entity trust signal for Google review.
+
+### Advertise Page Policy Cleanup
+
+File:
+
+- `app/(main)/advertise/AdvertiseContent.tsx`
+
+Problem:
+
+- Phrase `Indexed and SEO-friendly` looked like selling link equity.
+
+Fix:
+
+- Replaced with:
+
+```text
+Clearly labeled sponsored content
+```
+
+## Known SEO / AdSense Issues
+
+### Ghost Article URLs
+
+Google had indexed 11 article URLs that do not exist in Sanity:
+
+- `circle-arc-chain-quantum-features`
+- `resolv-infinite-mint-stablecoin-security-failure`
+- `sec-reg-crypto-fundraising-atkins`
+- `bitgo-mint-stablecoin-minting-redemption-institutions`
+- `bitcoin-etf-outflows-rattle-crypto-as-iran-war-fears-take-hold`
+- `sky-agent-network-capital-allocators`
+- `drift-protocol-north-korea-linked-hackers`
+- `delaware-stablecoin-framework-sb19`
+- `senate-clarity-act-crypto-bill`
+- `toncoin-telegram-integration-usdt-adoption`
+- `maryland-man-charged-uranium-finance-hacks`
+
+Sanity check result:
+
+- no published docs
+- no draft docs
+- not in sitemap
+
+Production behavior observed earlier:
+
+- live URLs returned HTTP 200 with 404 shell content
+- no article markup
+- no `X-Robots-Tag`
+
+This is a soft-404 risk and likely affected AdSense quality review. The best next fix is to return hard `410 Gone` or real `404` for those known ghost article URLs.
+
+Suggested implementation:
+
+- Add static route handlers for these specific slugs returning `410`, or
+- Add middleware/proxy routing for a denylist of removed news slugs, or
+- Fix global `notFound()` behavior if the soft-404 is caused by static export/cache behavior.
+
+### Author Soft-404 Pattern
+
+`/author/market-analyst` has been fixed locally with a `410` route. Confirm after deploy:
+
+```bash
+curl -I https://www.crypticdaily.com/author/market-analyst
+```
+
+Expected:
+
+```text
+HTTP/2 410
+x-robots-tag: noindex, nofollow
+```
+
+## Maintenance Scripts
+
+Most scripts live under `sanitymjs/`. Treat them as powerful, one-off CMS mutation scripts. Read before running.
+
+Common env vars for scripts:
+
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID
+NEXT_PUBLIC_SANITY_DATASET
+SANITY_API_TOKEN
+SANITY_PROJECT_ID       # some scripts support this alternative
+SANITY_DATASET          # some scripts support this alternative
+SANITY_TOKEN            # some scripts support this alternative
+SANITY_API_VERSION      # defaults to 2024-01-01 in many scripts
+DRY_RUN=1               # supported by some scripts
+```
+
+Important scripts:
+
+- `sanitymjs/upload-all-articles.mjs`: bulk Crypto Newswire upload.
+- `sanitymjs/upload-web3-builder-articles.mjs`: bulk Web3 Builder upload.
+- `sanitymjs/upload-web3-fraud-files.mjs`: bulk Web3 Fraud Files upload.
+- `sanitymjs/single-article.mjs`: currently modified locally; inspect before using.
+- `sanitymjs/upload-article.mjs`: single Resolv article script, now points author to Marcus Bishop.
+- `sanitymjs/upload-clarity-act.mjs`: single Franklin/250 Digital script, now points author to Marcus Bishop.
+- `sanitymjs/remove-listed-articles-and-tags.mjs`: deletion utility.
+- `sanitymjs/delete-all-articles-except-upload-batch.mjs`: dangerous deletion utility.
+- `sanitymjs/add-inline-links.mjs`: wraps existing phrases in links.
+- `sanitymjs/remove-inline-links.mjs`: removes inline links.
+- `sanitymjs/inject-external-links.mjs`: adds external links.
+- `sanitymjs/upload-alttext-by-title.mjs`: alt text utility.
+- `sanitymjs/set-cryptic-daily-alt-text-and-publish.mjs`: alt/publish utility.
+- `sanitymjs/assign-category-authors.mjs`: assigns articles to authors based on category.
+
+Do not run deletion scripts without a Sanity export/backup.
+
+## Build and Verification Checklist
+
+Use this after making changes:
+
+```bash
+npx tsc --noEmit --pretty false
+npm run build
+```
+
+For built local verification:
+
+```bash
+PORT=3001 npm run start
+curl -I http://localhost:3001/
+curl -I http://localhost:3001/author/market-analyst
+```
+
+Expected for removed author:
+
+```text
+HTTP/1.1 410 Gone
+X-Robots-Tag: noindex, nofollow
+```
+
+Search for risky SEO phrases:
+
+```bash
+rg -n "Indexed and SEO-friendly|SEO-friendly sponsored|author-market-analyst|Market Analyst|market-analyst" app sanity sanitymjs lib components
+```
+
+Expected:
+
+- No `Indexed and SEO-friendly`.
+- No `Market Analyst` references, except if intentionally checking old docs.
+- The only `market-analyst` code path should be the hard `410` route if present.
+
+## Current Git/Worktree Notes
+
+There may be uncommitted local changes from recent fixes. Before taking over, run:
+
+```bash
+git status --short
+git diff --stat
+```
+
+Recent intentionally changed files include:
+
+- `AI_HANDOFF.md`
+- `app/(main)/about/page.tsx`
+- `app/(main)/advertise/AdvertiseContent.tsx`
+- `app/(main)/contact/ContactContent.tsx`
+- `app/(main)/author/market-analyst/route.ts`
+- `lib/sanity/queries.ts`
+- `lib/utils.ts`
+- `sanitymjs/upload-all-articles.mjs`
+- `sanitymjs/upload-article.mjs`
+- `sanitymjs/upload-clarity-act.mjs`
+
+Also note:
+
+- `sanitymjs/single-article.mjs` was already modified before some of these fixes. Do not overwrite it casually.
+
+## Deployment Notes
+
+Vercel env vars must include Sanity values in Production and Preview if those environments should render content.
+
+Required for content:
+
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID
+NEXT_PUBLIC_SANITY_DATASET
+SANITY_API_TOKEN
+SANITY_WEBHOOK_SECRET
+```
+
+Required for correct public URLs:
+
+```bash
+NEXT_PUBLIC_SITE_URL
+NEXT_PUBLIC_SITE_NAME
+```
+
+For ads/analytics:
+
+```bash
+NEXT_PUBLIC_ADSENSE_CLIENT
+NEXT_PUBLIC_GA_ID
+NEXT_PUBLIC_GA_MEASUREMENT_ID
+```
+
+For newsletter:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+Local `.env.local` currently has missing Supabase keys, so newsletter routes may not work locally.
+
+## Practical Next Steps for a New Developer
+
+1. Run `git status --short` and identify existing uncommitted work.
+2. Run `npx tsc --noEmit --pretty false`.
+3. Run `npm run build`.
+4. Deploy the current fixes if not already deployed.
+5. After deploy, verify:
+   - `/author/market-analyst` returns `410`.
+   - Contact page includes EU editorial line.
+   - Advertise page no longer contains SEO/link-juice language.
+   - Homepage article dates show calendar dates for older May 2026 posts.
+   - Homepage reading times match article pages.
+6. Add hard `410` handling for the 11 ghost article URLs before reapplying for AdSense.
+7. In Search Console, request recrawl/removal for removed ghost URLs after production returns `410` or real `404`.
+
+## High-Risk Areas
+
+- Sanity deletion scripts in `sanitymjs/`.
+- Soft-404 behavior for missing CMS pages.
+- Any generic or empty author profile.
+- Sponsored content wording that implies paid SEO/link equity.
+- Missing env vars causing empty rendered pages through fallback Sanity client.
+- ESLint setup mismatch: do not assume `npm run lint` works until ESLint 9 flat config is added.
+
+## Short Summary
+
+Cryptic Daily is a Sanity-backed Next.js news site. Sanity is integrated through SDK/API clients, not through a repo-configured MCP server. The most important recent work was AdSense quality cleanup: fixing empty author pages, safer sponsored-content language, EU editorial signal on Contact, date display, reading time consistency, and About page counters. The biggest remaining SEO task is hard-removing the 11 indexed ghost article URLs so Google receives `410` or a true `404`, not a 200 shell.

@@ -46,12 +46,6 @@ export function LazyAdUnit(props: AdUnitProps) {
       return;
     }
 
-    const node = rootRef.current;
-
-    if (!node) {
-      return;
-    }
-
     if (!("IntersectionObserver" in window)) {
       setShouldRenderAd(true);
       return;
@@ -61,18 +55,26 @@ export function LazyAdUnit(props: AdUnitProps) {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
     let idleId: number | null = null;
 
+    // Renders the ad once the browser is idle, whichever comes first:
+    // scrolled into view, or the idle/timeout deadline. This guarantees the
+    // ad slot fires even for visitors (or crawlers) that never scroll down.
+    const revealAd = () => {
+      setShouldRenderAd(true);
+      observer?.disconnect();
+    };
+
     const startObserving = () => {
       const currentNode = rootRef.current;
 
       if (!currentNode) {
+        revealAd();
         return;
       }
 
       observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setShouldRenderAd(true);
-            observer?.disconnect();
+            revealAd();
           }
         },
         {
@@ -82,6 +84,10 @@ export function LazyAdUnit(props: AdUnitProps) {
       );
 
       observer.observe(currentNode);
+
+      // Hard fallback: render regardless of visibility shortly after the
+      // idle/timeout deadline so the ad isn't gated on scrolling at all.
+      timeoutId = setTimeout(revealAd, 1500);
     };
 
     if ("requestIdleCallback" in window) {

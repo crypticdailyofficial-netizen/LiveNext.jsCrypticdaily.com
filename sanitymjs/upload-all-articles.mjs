@@ -152,13 +152,6 @@ const categoryDoc = {
   slug: { _type: "slug", current: "crypto-newswire" },
 };
 
-const authorMarketAnalyst = {
-  _id: "author-market-analyst",
-  _type: "author",
-  name: "Market Analyst",
-  slug: { _type: "slug", current: "market-analyst" },
-};
-
 const authorRegulatoryReporter = {
   _id: "author-regulatory-reporter",
   _type: "author",
@@ -176,7 +169,7 @@ const article1 = {
   title: "Franklin Templeton Buys 250 Digital for Crypto Push",
   slug: { _type: "slug", current: "franklin-templeton-250-digital-crypto" },
   category: { _ref: "category-crypto-newswire", _type: "reference" },
-  author: { _ref: "author-market-analyst", _type: "reference" },
+  author: { _ref: "author-alex-carter", _type: "reference" },
   mainImage: { _type: "image", alt: "Cryptic daily" },
   body: [
     textBlock("Franklin Templeton's 250 Digital acquisition is more than another crypto headline from a big asset manager. The $1.7 trillion firm said on April 1 it will acquire the CoinFund spinoff, fold its team and liquid token strategies into a new unit called Franklin Crypto, and close the deal in the second quarter of 2026 if customary conditions and client consents are met. Reuters reported the transaction first, while Franklin Templeton added a detail that matters even more for market structure: part of the consideration will use BENJI tokens, tying the deal to the firm's existing tokenized fund stack."),
@@ -228,7 +221,7 @@ const article2 = {
   title: "NYSE, Securitize Push Tokenized Securities Platform",
   slug: { _type: "slug", current: "nyse-securitize-tokenized-securities-platform" },
   category: { _ref: "category-crypto-newswire", _type: "reference" },
-  author: { _ref: "author-market-analyst", _type: "reference" },
+  author: { _ref: "author-alex-carter", _type: "reference" },
   mainImage: { _type: "image", alt: "Cryptic daily" },
   body: [
     textBlock("NYSE's Securitize tokenized securities platform plan matters because it is aimed at market plumbing, not marketing. On March 24, the New York Stock Exchange said it signed a memorandum of understanding with Securitize to support the development of tokenized securities markets, including a digital transfer-agent program for an NYSE-affiliated digital trading platform. Reuters reported the partnership as another sign that major U.S. exchanges want blockchain-based settlement inside regulated capital markets, not outside them."),
@@ -342,7 +335,7 @@ function buildArticle4() {
     title: "Coinbase Pitches Crypto Down Payments for Homes",
     slug: { _type: "slug", current: "coinbase-crypto-down-payments-homes" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Coinbase crypto down payments mortgage is one of the clearest attempts yet to turn digital assets into a mainstream consumer-finance product. Reuters reported on March 26 that Coinbase and Better Home & Finance will let buyers borrow against bitcoin or USDC in a Coinbase account to fund a home down payment, while taking out a separate conventional mortgage on the property itself. The pitch is simple: keep your crypto, avoid a taxable sale, and still buy the house. The tradeoff is just as clear: you are layering a second loan onto an already expensive purchase."),
@@ -386,7 +379,7 @@ function buildArticle5() {
     title: "Mercado Pago Kills Mercado Coin, Keeps Stablecoin Focus",
     slug: { _type: "slug", current: "mercado-pago-ends-mercado-coin" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Mercado Pago Mercado Coin shutdown is less about one token disappearing and more about what Latin American fintechs now think crypto is actually good for. Reuters reported on March 31 that Mercado Pago, the fintech arm of MercadoLibre, will discontinue Mercado Coin, the cashback cryptocurrency it launched in Brazil in 2022, and convert any unused balances to Brazilian reais after April 17. The company said the change reflects an evolution in its crypto strategy, with its focus since 2024 shifting toward Meli Dolar, its dollar-priced stablecoin."),
@@ -429,7 +422,7 @@ function buildArticle6() {
     title: "Bitcoin Slides as Iran Shock Jolts Global Markets",
     slug: { _type: "slug", current: "bitcoin-iran-shock-global-markets" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Bitcoin Iran market selloff is the cleanest way to read Thursday's move. After President Donald Trump said the U.S. would hit Iran \"extremely hard\" over the next two to three weeks, bitcoin dropped from roughly $69,100 to as low as $66,250, more than $386 million in crypto positions were liquidated, oil surged, and equities and gold also sold off. Decrypt tied the move directly to the war address, while Reuters confirmed the escalation in Trump's language and the jump in crude prices after the speech."),
@@ -479,7 +472,7 @@ function buildArticle7() {
     title: "Stablecoin Velocity Doubles as $2T Forecast Holds",
     slug: { _type: "slug", current: "stablecoin-velocity-2t-forecast" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("The stablecoin market 2 trillion 2028 forecast is still intact, even after a sharp shift in how these tokens are being used. Decrypt reported on March 31 that Standard Chartered said stablecoin velocity has doubled over the past two years, with tokens now turning over about six times per month on average, yet the bank still maintains its call for the market to reach $2 trillion in capitalization by the end of 2028. The reason is simple: faster turnover is being offset by new demand coming from payments, traditional finance use cases, and early AI-agent commerce."),
@@ -524,7 +517,7 @@ function buildArticle8() {
     title: "Moody's Rates New Hampshire's Bitcoin Bond Ba2",
     slug: { _type: "slug", current: "moodys-new-hampshire-bitcoin-bond" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("New Hampshire bitcoin bond rating is the real headline here, not the novelty alone. Moody's assigned a provisional Ba2 rating on March 31 to two classes of taxable revenue bonds to be issued through the New Hampshire Business Finance Authority, in what Moody's described as bonds backed by loans secured with bitcoin. That appears to be the first publicly reported Moody's rating on a BTC-collateralized bond structure, giving bitcoin direct entry into rated public-debt markets under a speculative-grade framework."),
@@ -566,7 +559,7 @@ function buildArticle9() {
     title: "Riot Sells $289M in Bitcoin as AI Pivot Deepens",
     slug: { _type: "slug", current: "riot-sells-bitcoin-ai-pivot" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Riot bitcoin sale AI pivot is the right frame for this story because the key issue is not the headline dollar amount alone. Riot Platforms disclosed on April 2 that it sold 3,778 bitcoin in the first quarter for $289.5 million in net proceeds at an average price of $76,626 per BTC, while Decrypt tied the move to the company's widening push into AI and data center infrastructure. Riot ended the quarter with 15,680 BTC, including 5,802 restricted bitcoin, which means the company is still a major holder even after the sale."),
@@ -608,7 +601,7 @@ function buildArticle10() {
     title: "GameStop Caps Bitcoin Upside With Covered Calls",
     slug: { _type: "slug", current: "gamestop-bitcoin-covered-calls" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("GameStop bitcoin covered call strategy is the real story here, not just the size of the position. Decrypt reported on March 28 that GameStop moved all but 1 BTC of its treasury holdings into a covered call structure on Coinbase Prime, with 4,709 BTC worth about $315 million at the time tied to the trade. The company's own 10-K shows the economic logic clearly: generate incremental yield, keep downside exposure, and cap some upside above the strike prices."),
@@ -651,7 +644,7 @@ function buildArticle11() {
     title: "Bitcoin Outperforms Stocks as Oil Shock Drags On",
     slug: { _type: "slug", current: "bitcoin-outperforms-stocks-oil-shock" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Bitcoin outperforms stocks oil shock is the right frame for this move because BTC was still falling, just less violently than equities. Decrypt reported on March 23 that bitcoin traded near $68,000, down about 2% on the day and roughly 6% on the week, while U.S. stocks had already logged four straight weekly declines and the S&P 500 and Nasdaq were down about 4% to 5% for the month. The backdrop was the Iran war's fourth week, with oil climbing back toward $100 a barrel as the Strait of Hormuz disruption kept inflation fears elevated."),
@@ -693,7 +686,7 @@ function buildArticle12() {
     title: "Bitcoin Loss Supply Near 47% Flashes Stress Signal",
     slug: { _type: "slug", current: "bitcoin-loss-supply-stress-signal" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Bitcoin supply at a loss is back near levels that usually get traders' attention for the wrong reasons. Decrypt reported on March 30 that about 9.4 million BTC, roughly 47% of circulating supply, was sitting on unrealized losses, with bitcoin still about 47% below its prior all-time high. The more important detail was not the headline percentage. It was that more than 30% of long-term-holder bitcoin had also slipped underwater, the highest share since 2023."),
@@ -778,7 +771,7 @@ function buildArticle14() {
     title: "Bitcoin Difficulty Drops 7.7% as Miner Stress Builds",
     slug: { _type: "slug", current: "bitcoin-difficulty-drops-miner-stress" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Bitcoin mining difficulty drops 7.7% is not just a protocol statistic. It is a visible sign that meaningful hash power left the network during the prior adjustment window. Cointelegraph, citing CoinWarz data, reported that Bitcoin's mining difficulty fell around 7.7% on March 20 to 133.79 trillion at block 941,472, marking the sharpest drop since February. A range of other market-data summaries matched the same reset level and timing."),
@@ -820,7 +813,7 @@ function buildArticle15() {
     title: "Bitcoin ETFs Break Inflow Streak as Risk Hedging Returns",
     slug: { _type: "slug", current: "bitcoin-etfs-break-inflow-streak" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Bitcoin ETFs break 4-week inflow streak is the real signal here, not the outflow number by itself. US spot Bitcoin ETFs posted about $296.18 million in net outflows for the week ending March 27, 2026, snapping four consecutive weeks of inflows that had totaled more than $2.2 billion. Cointelegraph's report framed the reversal as capital stepping back from \"directional risk,\" while follow-on summaries tied the move to a more cautious macro tape rather than a collapse in ETF demand."),
@@ -862,7 +855,7 @@ function buildArticle16() {
     title: "Metaplanet Adds 5,075 BTC as Options Engine Scales",
     slug: { _type: "slug", current: "metaplanet-adds-5075-btc-q1" },
     category: { _ref: "category-crypto-newswire", _type: "reference" },
-    author: { _ref: "author-market-analyst", _type: "reference" },
+    author: { _ref: "author-alex-carter", _type: "reference" },
     mainImage: { _type: "image", alt: "Cryptic daily" },
     body: [
       textBlock("Metaplanet adds 5,075 BTC in Q1 is the headline, but the more revealing detail is how it did it. The Tokyo-listed company said it acquired 5,075 bitcoin during the first quarter of 2026 for JPY 63.645 billion at an average price of JPY 12.54 million per BTC, lifting total holdings to 40,177 BTC as of March 31 and pushing it into third place among publicly listed bitcoin treasury companies. Cointelegraph highlighted the treasury jump. Metaplanet's own disclosure and tracker show the broader point: this is now a capital-markets-and-income machine, not just a corporate spot buyer."),
@@ -925,7 +918,6 @@ async function upload() {
   const mutations = [
     // Category & Authors
     { createIfNotExists: categoryDoc },
-    { createIfNotExists: authorMarketAnalyst },
     { createIfNotExists: authorRegulatoryReporter },
     // Tags
     ...allTags.map((t) => ({ createIfNotExists: t })),

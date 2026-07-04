@@ -17,6 +17,9 @@ import {
 } from "@/lib/sanity/queries";
 import { AboutContent } from "./AboutContent";
 
+const FALLBACK_ARTICLE_COUNT = 48;
+const FALLBACK_CATEGORY_COUNT = 3;
+
 /* ─── Fonts ──────────────────────────────────────────────────────────────── */
 const bebas = Bebas_Neue({
   weight: "400",
@@ -79,8 +82,14 @@ export default async function AboutPage() {
     getLatestArticles(4),
   ]);
 
-  const articleCount = Array.isArray(articles) ? articles.length : 0;
-  const categoryCount = Array.isArray(categories) ? categories.length : 0;
+  const articleCount =
+    Array.isArray(articles) && articles.length > 0
+      ? articles.length
+      : FALLBACK_ARTICLE_COUNT;
+  const categoryCount =
+    Array.isArray(categories) && categories.length > 0
+      ? categories.length
+      : FALLBACK_CATEGORY_COUNT;
   const authors = mapSanityAuthors(authorsData);
   const latestArticles = mapSanityArticles(latestArticlesData);
 

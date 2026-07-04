@@ -29,6 +29,7 @@ const homepageArticleCardFields = `
   title,
   "slug": slug.current,
   excerpt,
+  "bodyText": pt::text(body),
   publishedAt,
   _updatedAt,
   featured,

@@ -85,13 +85,6 @@ const categoryDoc = {
   title: "Web3 Fraud Files",
   slug: { _type: "slug", current: "web3-fraud-files" },
 };
-const authorMarketAnalyst = {
-  _id: "author-market-analyst",
-  _type: "author",
-  name: "Market Analyst",
-  slug: { _type: "slug", current: "market-analyst" },
-};
-
 // Article
 
 const article = {
@@ -104,7 +97,7 @@ const article = {
     current: "resolv-infinite-mint-stablecoin-security-failure",
   },
   category: { _ref: "category-web3-fraud-files", _type: "reference" },
-  author: { _ref: "author-market-analyst", _type: "reference" },
+  author: { _ref: "author-alex-carter", _type: "reference" },
   mainImage: {
     _type: "image",
     alt: "Resolv infinite mint exploit and stablecoin issuance failure article cover image",
@@ -277,7 +270,6 @@ async function upload() {
 
   const mutations = [
     { createIfNotExists: categoryDoc },
-    { createIfNotExists: authorMarketAnalyst },
     { createOrReplace: article },
   ];
 

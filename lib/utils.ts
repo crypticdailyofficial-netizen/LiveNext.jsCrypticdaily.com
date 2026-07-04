@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { formatDistanceToNow, format, isYesterday, isToday } from "date-fns";
+import { formatDistance, format, isSameDay, subDays } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,10 +51,12 @@ export function countPortableTextWords(body: unknown): number {
 
 export function formatRelativeDate(dateString: string): string {
   const date = new Date(dateString);
-  if (isToday(date)) {
-    return formatDistanceToNow(date, { addSuffix: true });
+  const now = new Date();
+
+  if (isSameDay(date, now)) {
+    return formatDistance(date, now, { addSuffix: true });
   }
-  if (isYesterday(date)) {
+  if (isSameDay(date, subDays(now, 1))) {
     return "Yesterday";
   }
   return format(date, "MMM d, yyyy");

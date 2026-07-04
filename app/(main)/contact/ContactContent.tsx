@@ -390,6 +390,13 @@ export function ContactContent({ fontVars }: Props) {
               className="mt-4 text-[#E8E4D9] text-[0.74rem] tracking-[0.18em] uppercase"
               style={{ fontFamily: "var(--font-jb-mono)" }}
             >
+              Editorial team based in the European Union
+            </p>
+
+            <p
+              className="mt-4 text-[#E8E4D9] text-[0.74rem] tracking-[0.18em] uppercase"
+              style={{ fontFamily: "var(--font-jb-mono)" }}
+            >
               General enquiries: {EMAIL}
             </p>
 
